@@ -1,0 +1,20 @@
+project notes
+
+2/27/19
+trying to get fdaa layer to show. Got it to import but now getting errors with geojosn format
+
+text display wierdness from forever ago but can't remember what's going on
+
+3/6/19
+got layer for fdaa, it was looking in public folder but layer was in layers folder. if want to pull layer from layer folder need to at the top do import whatever layer from location
+
+trying to change zoom
+
+3/7/19
+fixed zoom, figuring ot why getting something wierd from get text
+
+3/11/19
+action index. stopping after second time through map on line 47
+
+3/15/19
+leaving map broken. oops. untitled has working code for fdaa layer. need to figure out how to pass props to the layer to color the map layers. looked at fuel status map and did it as child inheritance but just read some react article about how that's not good, so look into inheritance vs composition. sounds like composition is better. current code has ercmap.js sending 'hi' to the fdaa layer but that prob doesn't work. well, doing it as a function not as a child thing in react so yeah. will have forgotten all of this by the time i do it again im sure. 
