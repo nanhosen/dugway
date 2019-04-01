@@ -1,4 +1,4 @@
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 // import Feature from 'ol/Feature.js'
 // import Map from 'ol/Map.js'
 // import View from 'ol/View.js'
@@ -27,7 +27,7 @@ const fdaaLayer = fdraLevel => new VectorLayer({
   style: (feature, resolution) => {
     const style = new Style({
       fill: new Fill({
-        color: 'rgba(244,67,54,0.5)'
+        color: 'rgba(111,143,174,0.2)'
       }),
       stroke: new Stroke({
         color: 'rgba(7,7,7,0.8)', 
@@ -46,13 +46,16 @@ const fdaaLayer = fdraLevel => new VectorLayer({
     })
     const zone = feature.get('Fire_Dange')
     var name = 'FDRA ' + zone
+    var zoneId = 'fdra' + zone
     // console.log('zone', name)
-    const { status } = fdraLevel[zone] || ''
+    console.log('fdraLayer rendered and got this: ', fdraLevel)
+    const { status } = fdraLevel[zoneId] || ''
     const color = {
       'Low': '#ffc107',
       'Moderate': '#28a645',
       'Extreme': '#dc3545',
-    }[status] || 'rgba(176, 176, 176, 1)'
+    }[status] || 'rgba(211,17,78,0.6)'
+    // const color = 'rgba(211,17,78,0.6)'
     style.getFill().setColor(color)
     // style.getText().setText(resolution < 5000 ? name : '');
     return style

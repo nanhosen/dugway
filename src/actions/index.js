@@ -31,7 +31,9 @@ export function makeReq() {
         fdra3: [260112]
       }
       //not using stnsinfdras but could change code to include this sort of thing if more than 1 stn in an fdral. like, in the line 5 area map over stns in the array of the fdra and then assign average value to each fdra for each day
-
+      // getColors = level => {
+      //   if
+      // }
       var stnFdraMap = new Map()
       stnFdraMap.set(260110, 'fdra1')
                 .set(260111, 'fdra2')

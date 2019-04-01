@@ -18,7 +18,7 @@ import Stamen from 'ol/source/Stamen'
 // import {Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 // import GeoJSON from 'ol/format/GeoJSON'
 // import Collection from 'ol/Collection'
-import fdaaLayer from '../layers/fdaaLayer.js'
+// import fdaaLayer from '../layers/fdaaLayer.js'
 
 import { makeReq } from '../actions' 
 
@@ -58,7 +58,7 @@ class ERCMap extends Component {
         new LayerGroup({
           title: 'Overlays',
           layers: [
-            fdaaLayer('hi')
+            this.props.layer
           ]
         })
       ],
@@ -73,10 +73,14 @@ class ERCMap extends Component {
     // this._map.getView().fit([ -13385849.855545742, 4164163.9360093023, -12120670.513975333, 5733155.322681262 ], (this._map.getSize()), {padding: [10, 20, 50, 20], constrainResolution: false})
 	}
   componentDidUpdate(){
-    // console.log('componentDidUpdate this',  this)
+    console.log('componentDidUpdate this',  this)
   }
   // componentWillUnmount = () => window.removeEventListener("resize", this.handleResizedScreen)
-  render = () => <div className='card h-100 border-0' id="map"></div>
+  render = () => {
+    console.log('ercmap render', this)
+    return <div className='card h-100 border-0' id="map"></div>
+  }
+
 }
 
 
