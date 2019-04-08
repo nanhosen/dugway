@@ -48,15 +48,35 @@ const fdaaLayer = fdraLevel => new VectorLayer({
     var name = 'FDRA ' + zone
     var zoneId = 'fdra' + zone
     // console.log('zone', name)
-    console.log('fdraLayer rendered and got this: ', fdraLevel)
-    const { status } = fdraLevel[zoneId] || ''
-    const color = {
-      'Low': '#ffc107',
-      'Moderate': '#28a645',
-      'Extreme': '#dc3545',
-    }[status] || 'rgba(211,17,78,0.6)'
-    // const color = 'rgba(211,17,78,0.6)'
-    style.getFill().setColor(color)
+    // console.log('fdraLayer rendered and got this: ', Object.keys(fdraLevel.wimsData).length)
+    if(fdraLevel['wimsData']['stateObj']!==undefined){
+      console.log('fdraLevel[zoneId]: ', fdraLevel['wimsData']['stateObj'][zoneId], zoneId, fdraLevel)
+      var statuss = fdraLevel['wimsData']['stateObj'][zoneId]
+
+    }
+    else {
+      var statuss = undefined
+    }
+    
+    // const { status } = fdraLevel['wimsData']['stateObj'] || ''
+    console.log('status', zoneId, statuss)
+    if(statuss !== undefined){
+      console.log(statuss['text']['level'])
+      var lev = statuss['text']['level']
+    }
+    else{
+      console.log('statuss is undefined')
+      var lev = ''
+    }
+  
+    const colorr = {
+      'Low': '#35d723',
+      'Moderate': '#f2bb15',
+      'Extreme': '#f21515',
+    }[lev] || 'rgba(178,171,171,0.6)'
+    console.log('colorr',zoneId, colorr)
+    const color = 'rgba(211,17,78,0.6)'
+    style.getFill().setColor(colorr)
     // style.getText().setText(resolution < 5000 ? name : '');
     return style
   }        

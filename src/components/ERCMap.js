@@ -18,7 +18,7 @@ import Stamen from 'ol/source/Stamen'
 // import {Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 // import GeoJSON from 'ol/format/GeoJSON'
 // import Collection from 'ol/Collection'
-// import fdaaLayer from '../layers/fdaaLayer.js'
+import fdaaLayer from '../layers/fdaaLayer.js'
 
 import { makeReq } from '../actions' 
 
@@ -28,6 +28,7 @@ const mapKey = 'pk.eyJ1IjoicnRpcHBldHRzIiwiYSI6ImNpb2huaWtuNDAwNnF1NW0xNWFhYXJiM
 
 
 class ERCMap extends Component {
+  state = { stateObj: 'first state' }
 
   handleResizedScreen = () => setTimeout(() => {
     this._map.getView().fit([ -13385849.855545742, 4164163.9360093023, -12120670.513975333, 5733155.322681262 ], (this._map.getSize()), {padding: [10, 20, 50, 20], constrainResolution: false})
@@ -36,6 +37,7 @@ class ERCMap extends Component {
   componentDidMount() {
     window.addEventListener("resize", this.handleResizedScreen)
     this.props.makeReq()
+    console.log('mount this', this.props)
 
       /**
        * @constructor
@@ -58,7 +60,7 @@ class ERCMap extends Component {
         new LayerGroup({
           title: 'Overlays',
           layers: [
-            this.props.layer
+            fdaaLayer(this.props)
           ]
         })
       ],
@@ -72,12 +74,17 @@ class ERCMap extends Component {
     this._map = newMap
     // this._map.getView().fit([ -13385849.855545742, 4164163.9360093023, -12120670.513975333, 5733155.322681262 ], (this._map.getSize()), {padding: [10, 20, 50, 20], constrainResolution: false})
 	}
-  componentDidUpdate(){
-    console.log('componentDidUpdate this',  this)
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.wimsData !== this.props.wimsData){
+    //   this.setState({ stateObj: this.props.stateObj })
+    //   // this.setState({ stateObj: 'newstate' })
+      console.log('dont match', this.props, prevProps)
+    }
+    // console.log('component did mout', this)
   }
   // componentWillUnmount = () => window.removeEventListener("resize", this.handleResizedScreen)
   render = () => {
-    console.log('ercmap render', this)
+    // console.log('ercmap render', this)
     return <div className='card h-100 border-0' id="map"></div>
   }
 

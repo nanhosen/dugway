@@ -3,6 +3,10 @@ import * as axios from 'axios'
 import { WIMS_DATA } from './types'
 import { makeDates } from '../components/things/makeDates'
 import { getText } from '../components/things/getText'
+import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js'
+import VectorSource from 'ol/source/Vector.js'
+import { Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
+import GeoJSON from 'ol/format/GeoJSON'
 
 
 // export function makeReq(day1,month1,year1,day2,month2,year2,day3,month3,year3){
@@ -77,11 +81,66 @@ export function makeReq() {
       })
       var textget = getText(valObj)
       var text = 'text'
+
+      var vecLayer = new VectorLayer({
+        title: 'Dispatch Boundaries',
+        visible: true,
+        source: new VectorSource({
+          url: './FDAAs4326.json', 
+          format: new GeoJSON()
+        }),  
+        wrapX: false,
+        minResolution: 0,
+        maxResolution: 10000,
+        style: (feature, resolution) => {
+          const style = new Style({
+            fill: new Fill({
+              color: 'rgba(111,143,174,0.2)'
+            }),
+            stroke: new Stroke({
+              color: 'rgba(7,7,7,0.8)', 
+              width: 1
+            }),
+            text: new Text({
+              font: '15px Montserrat, sans-serif',
+              fill: new Fill({
+                color: '#000'
+              }),
+              stroke: new Stroke({
+                color: 'rgba(238, 238, 238, 1)',
+                width: 3
+              })
+            })
+          })
+          const zone = feature.get('Fire_Dange')
+          var name = 'FDRA ' + zone
+          var zoneId = 'fdra' + zone
+          // console.log('zone', name)
+          console.log('fdraLayer rendered and got this: ', stateObj)
+          const { status } = stateObj[zoneId] || ''
+          const color = {
+            'Low': '#ffc107',
+            'Moderate': '#28a645',
+            'Extreme': '#dc3545',
+          }[status] || 'rgba(211,17,78,0.6)'
+          // const color = 'rgba(211,17,78,0.6)'
+          style.getFill().setColor(color)
+          // style.getText().setText(resolution < 5000 ? name : '');
+          return style
+        }  
+
+      // projection: 'EPSG:3857',
+      // source: vectorSource,
+      // name: 'rawsPoints',
+      // visible: true,
+      // // style: styleFunction
+      // style: iconStyle
+      })
  
-      // console.log(stateObj, 'stateObj')
+      console.log(vecLayer, 'vecLayer')
       // console.log(valObj, 'valObj', textget, 'textget')
-      var payload = {allVals, stateObj, text}
-      console.log(payload, 'payload')
+      var payload = {allVals, stateObj, text, vecLayer}
+      // console.log(payload, 'payload')
       dispatch({ type: WIMS_DATA, payload })
         
 
@@ -93,3 +152,77 @@ export function makeReq() {
   }
 
 }
+
+
+
+var styleFunction = function(feature, resolution){
+  var currFdra = feature.get('Fire_Dange')
+}
+
+// export function fdaaLayer(fdraData) {
+//   var vecLayer = new VectorLayer({
+//     title: 'Dispatch Boundaries',
+//     visible: true,
+//     source: new VectorSource({
+//       url: './FDAAs4326.json', 
+//       format: new GeoJSON()
+//     }),  
+//     wrapX: false,
+//     minResolution: 0,
+//     maxResolution: 10000,
+//     style: (feature, resolution) => {
+//       const style = new Style({
+//         fill: new Fill({
+//           color: 'rgba(111,143,174,0.2)'
+//         }),
+//         stroke: new Stroke({
+//           color: 'rgba(7,7,7,0.8)', 
+//           width: 1
+//         }),
+//         text: new Text({
+//           font: '15px Montserrat, sans-serif',
+//           fill: new Fill({
+//             color: '#000'
+//           }),
+//           stroke: new Stroke({
+//             color: 'rgba(238, 238, 238, 1)',
+//             width: 3
+//           })
+//         })
+//       })
+//       const zone = feature.get('Fire_Dange')
+//       var name = 'FDRA ' + zone
+//       var zoneId = 'fdra' + zone
+//       // console.log('zone', name)
+//       console.log('fdraLayer rendered and got this: ', fdraData)
+//       const { status } = fdraData[zoneId] || ''
+//       const color = {
+//         'Low': '#ffc107',
+//         'Moderate': '#28a645',
+//         'Extreme': '#dc3545',
+//       }[status] || 'rgba(211,17,78,0.6)'
+//       // const color = 'rgba(211,17,78,0.6)'
+//       style.getFill().setColor(color)
+//       // style.getText().setText(resolution < 5000 ? name : '');
+//       return style
+//     }        
+//   // projection: 'EPSG:3857',
+//   // source: vectorSource,
+//   // name: 'rawsPoints',
+//   // visible: true,
+//   // // style: styleFunction
+//   // style: iconStyle
+//   })
+//   var payload = {vecLayer}
+//       // console.log(payload, 'payload')
+//   dispatch({ type: LAYER, payload })
+// }
+// // const mapStateToProps = state => {
+// //   const { wimsData } = state
+// //   console.log(wimsData, 'wimsDataLayer')
+// //   return { wimsData }
+// // }
+// // export default connect(mapStateToProps, null)(fdaaLayer)
+// export default fdaaLayer
+
+
