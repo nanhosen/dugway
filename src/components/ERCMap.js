@@ -62,7 +62,7 @@ export default class ERCMap extends Component {
       // console.log('flickrStyle this', this)
       var style = new  Style({
         stroke: new Stroke({
-          color: '#f00',
+          color: 'black',
           width: 1
         }),
         fill: new Fill({

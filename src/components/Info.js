@@ -23,15 +23,17 @@ class Info extends Component {
     var propDat = props.data.data
     var fdraArray = Object.keys(propDat)
     console.log(propDat)
-    const cardData = fdraArray.map( (curr, i) => {
-      console.log('cardData', cardData)
+    // var color = 'rgba(255,193,7,0.6)'
+    const cardData = fdraArray.map((curr, i) => {
+      var color = propDat[curr]["cardColor"]
+      console.log('propDat', propDat[curr]["layerColor"])
       if(propDat[curr]){
         return <div className="col" key={i}>
                  <div className= {`card ${propDat[curr]["cardColor"]}`} style={{height: '500px'}}>
-                   <div className="card-header">
+                   <div className="card-header" style={{backgroundColor: color}}>
                      <h5>{propDat[curr]["prettyName"]}</h5> 
                    </div>
-                   <div className="card-body">
+                   <div className="card-body" style={{backgroundColor: "white"}}>
                      <h5 className="card-title">Fire Danger Level: {propDat[curr]["level"]}</h5>
                      <p className="card-text">Precautionary Actions: {propDat[curr]["precautions"]}</p>
                    </div>

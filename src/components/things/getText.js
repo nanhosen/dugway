@@ -54,32 +54,33 @@ var jolSwitch = avg => ({
 	1: {
 		precautions: 'No precautions needed',
 		level: 'Low',
-		cardColor: 'bg-success text-white',
-		layerColor: '#28a645'
+		cardColor: 'rgba(40,166,69,0.3)',
+		textColor: 'white',
+		layerColor: 'rgba(40,166,69,0.6)'	
 	},
 	2: {
 		precautions: 'Extra water and fire tools needed',
 		level: 'Moderate',
-		cardColor: 'bg-warning',
-		layerColor: '#f7ff07'
+		cardColor: 'rgba(255,193,7,0.3)',
+		layerColor: 'rgba(255,193,7,0.6)'
 	},
 	3: {
 		precautions: 'Extra water and fire tools needed',
 		level: 'High',
-		cardColor: 'bg-warning',
-		layerColor: '#ff7e07'
+		cardColor: 'rgba(253,126,20,0.3)',
+		layerColor: 'rgba(253,126,20,0.6)'
 	},
 	4: {
 		precautions: 'Extra water and fire tools needed',
 		level: 'Very High',
-		cardColor: 'bg-warning',
-		layerColor: '#bd2130'
+		cardColor: 'rgba(189,33,48,0.3)',
+		layerColor: 'rgba(189,33,48,0.6)'
 	},
 	5: {
 		precautions: 'Extra water and fire tools needed',
 		level: 'Extreme',
-		cardColor: 'bg-warning',
-		layerColor: '#9221bd'
+		cardColor: 'rgba(102,16,242,0.3)',
+		layerColor: 'rgba(102,16,242,0.6)'
 	},
 })[avg]
 

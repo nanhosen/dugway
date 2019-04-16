@@ -55,13 +55,13 @@ export function makeReq() {
 
       var fdraArray = Object.keys(fdraInfo)
       console.log(fdraArray)
-// function below goes through each fdra and puts jolley index vals in an array called jolValArr. If there were two stations 
-//want it to looklike this:
- // [[ stn1day1val, stn2day1val, stn3day1val ], [ stn1day2val, stn2day2val, stn3day2val ], [ stn1val, stn2val, stn3val ]]
-// day1 [ stn1val, stn2val, stn3val ]
-// day2 [stn1val, stn2val, stn3val ]
-// day3 [stn1val, stn2val, stn3val ]
-//the 0 is for the first station and the 1 is for the second station. The values inside the array for each station represent the values for each day
+      // function below goes through each fdra and puts jolley index vals in an array called jolValArr. If there were two stations 
+      //want it to looklike this:
+       // [[ stn1day1val, stn2day1val, stn3day1val ], [ stn1day2val, stn2day2val, stn3day2val ], [ stn1val, stn2val, stn3val ]]
+      // day1 [ stn1val, stn2val, stn3val ]
+      // day2 [stn1val, stn2val, stn3val ]
+      // day3 [stn1val, stn2val, stn3val ]
+      //the 0 is for the first station and the 1 is for the second station. The values inside the array for each station represent the values for each day
       fdraArray.map(currFdra => {
         console.log('current fdra: ', currFdra)
         var stnArray = fdraInfo[currFdra].stations
@@ -76,7 +76,8 @@ export function makeReq() {
           fdraInfo[currFdra]['jolValAr'].push(dayArray)
         })
         fdraInfo[currFdra]['avgJolIndex'] = makeAvg(fdraArray)
-        var returnText = getText(makeAvg(fdraArray))
+        // var returnText = getText(makeAvg(fdraArray))
+        var returnText = getText(5)
         var addObj = { ...fdraInfo[currFdra], ...returnText}
         fdraInfo[currFdra] = addObj
       })
