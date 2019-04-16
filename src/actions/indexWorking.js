@@ -12,79 +12,93 @@ import { getText } from '../components/things/getText'
 import fdaaLayer1 from '../layers/fdaaLayer1'
 
 // export function makeReq(day1,month1,year1,day2,month2,year2,day3,month3,year3){
-function makeAvg(array){
-  return (array.reduce((curr,prev) => (parseInt(curr) + parseInt(prev)))) / array.length
-}
-
 export function makeReq() {
   return function(dispatch) {
     var parseString = xml2js.parseString
+    // console.log(dates)
     const dates = ['day1', 'day2', 'day3']
     const axiosArray = dates.map(curr => {
       return 'https://www.ercserver.us/'+ curr ;
+      // return 'https://fam.nwcg.gov/wims/xsql/nfdrs.xsql?stn=&sig=ALL_GB&type=O&start='+ curr + '&end=' + curr + '&time=&user=679&fmodel=7G';
+      // console.log(axios.get(url))
+      // return axios.get(url)
+      // axiosArray.push(axiosReq)
+      // console.log('as af')
     })
     
     Promise.all(axiosArray.map(url => axios.get(url)))
     .then(values => {
-      var fdraInfo = {
-        fdra1: {
-          stations: [420913],
-          jolValAr: [],
-          avgJolIndex: null,
-          prettyName: 'FDRA 1'
-        },
-        fdra2: {
-          stations: [420916],
-          jolValAr: [],
-          avgJolIndex: null,
-          prettyName: 'FDRA 2'
-        },
-        fdra3: {
-          stations: [420916],
-          jolValAr: [],
-          avgJolIndex: null,
-          prettyName: 'FDRA 3'
-        },
-        fdra4: {
-          stations: [420917],
-          jolValAr: [],
-          avgJolIndex: null,
-          prettyName: 'FDRA 4'
-        }
+      var stnsInFdras = {
+        fdra1: [420913],
+        fdra2: [420916],
+        fdra3: [420917], 
+        fdra4: [420917]
       }
+      //not using stnsinfdras but could change code to include this sort of thing if more than 1 stn in an fdral. like, in the line 5 area map over stns in the array of the fdra and then assign average value to each fdra for each day
+      // getColors = level => {
+      //   if
+      // }
+      var stnFdraMap = new Map()
+      stnFdraMap.set(420913, 'fdra1')
+                .set(420916, 'fdra2')
+                .set(420917, 'fdra3')
+      // stnFdraArray = [[420913, 'fdra1'], [420913, 'fdra2'], [420913, 'fdra3']]
 
-      var fdraArray = Object.keys(fdraInfo)
-      console.log(fdraArray)
-// function below goes through each fdra and puts jolley index vals in an array called jolValArr. If there were two stations 
-//want it to looklike this:
- // [[ stn1day1val, stn2day1val, stn3day1val ], [ stn1day2val, stn2day2val, stn3day2val ], [ stn1val, stn2val, stn3val ]]
-// day1 [ stn1val, stn2val, stn3val ]
-// day2 [stn1val, stn2val, stn3val ]
-// day3 [stn1val, stn2val, stn3val ]
-//the 0 is for the first station and the 1 is for the second station. The values inside the array for each station represent the values for each day
-      fdraArray.map(currFdra => {
-        console.log('current fdra: ', currFdra)
-        var stnArray = fdraInfo[currFdra].stations
-        var fdraArray = [] // has 3 values, one value of averaged index for all stations for each day. each value in array represents one day
-        values.map((curDay, i) => {
-          var dayArray = [] // day array has the value for each station for each day. So, if there are 3 stations there will be 3 vals, 1 station 1 value
-          stnArray.map((curStn, j) => {
-            dayArray.push(curDay['data'][curStn]['jolInd']) 
-          })
-          var dayAvg = makeAvg(dayArray) //single number average of all stations for one day for one fdra
-          fdraArray.push(dayAvg)
-          fdraInfo[currFdra]['jolValAr'].push(dayArray)
+      var stnArray = [420913, 420916, 420917]
+      var valObj = {}
+      var stateObj = {}
+      stnArray.map(curr => {
+        var currFdra = stnFdraMap.get(curr)
+        valObj[curr] = { 
+          biArray: [],
+          jolArray : []
+        }
+        stateObj[currFdra] = { 
+          biArray: [],
+          jolArray : []
+        }
+      })
+      console.log(valObj, 'valObj')
+
+      // console.log('in promise', values)
+      var allVals =  values.map((curr,i)=> curr.data)
+      console.log('allVals', allVals)
+      allVals.map((currVal,i) => {
+        stnArray.map((curStn,ii)=>{
+          var currFdra = stnFdraMap.get(curStn)
+          if(currVal[curStn] !== undefined){
+          console.log( currVal[curStn], curStn, 'here')
+
+            valObj[curStn]['biArray'].push(currVal[curStn]['bi'])
+            stateObj[currFdra]['biArray'].push(currVal[curStn]['bi'])
+            valObj[curStn]['jolArray'].push(currVal[curStn]['jolInd'])
+            stateObj[currFdra]['jolArray'].push(currVal[curStn]['jolInd'])
+          }
         })
-        fdraInfo[currFdra]['avgJolIndex'] = makeAvg(fdraArray)
-        var returnText = getText(makeAvg(fdraArray))
-        var addObj = { ...fdraInfo[currFdra], ...returnText}
-        fdraInfo[currFdra] = addObj
+      })
+      var text = "text"
+      stnArray.map((currStn,i) => {
+        console.log('currStn', currStn, 'ind', i)
+        var avgBi = (valObj[currStn]['biArray'].reduce((curr,prev) => (parseInt(curr) + parseInt(prev)))) / valObj[currStn]['biArray'].length
+        var avgJolInd = (valObj[currStn]['jolArray'].reduce((curr,prev) => (parseInt(curr) + parseInt(prev)))) / valObj[currStn]['jolArray'].length
+        var currFdra = stnFdraMap.get(currStn)
+        // console.log(currFdra)
+        valObj[currStn]['avgBi'] = avgBi
+        valObj[currStn]['avgJolInd'] = avgJolInd
+        valObj[currStn]['text'] = getText(avgJolInd)
+        stateObj[currFdra]['avgBi'] = avgBi
+        stateObj[currFdra]['avgJolInd'] = avgJolInd
+        stateObj[currFdra]['text'] = getText(avgJolInd)
+        // console.log(avgBi, 'avgBi', currStn, 'currStn')
       })
 
-      console.log(fdraInfo)
+
       
-      var payload = { fdraInfo }
-      console.log(payload, 'payload')
+      
+      // console.log(vecLayer, 'vecLayer')
+      // console.log(valObj, 'valObj', textget, 'textget')
+      var payload = {stateObj}
+      // console.log(payload, 'payload')
       dispatch({ type: WIMS_DATA, payload })
         
 
@@ -96,7 +110,6 @@ export function makeReq() {
   }
 
 }
-
 
 
 // export function fdaaLayer(fdraData) {

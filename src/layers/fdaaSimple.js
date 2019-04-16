@@ -10,11 +10,11 @@ import VectorSource from 'ol/source/Vector.js'
 import { Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 import GeoJSON from 'ol/format/GeoJSON'
 
-var styleFunction = function(feature, resolution){
-  var currFdra = feature.get('Fire_Dange')
-}
+// var styleFunction = function(feature, resolution){
+//   var currFdra = feature.get('Fire_Dange')
+// }
 
-const fdaaLayer = fdraLevel => new VectorLayer({
+const fdaaLayerSimple = fdraLevel => new VectorLayer({
   title: 'Dispatch Boundaries',
   visible: true,
   source: new VectorSource({
@@ -24,40 +24,40 @@ const fdaaLayer = fdraLevel => new VectorLayer({
   wrapX: false,
   minResolution: 0,
   maxResolution: 10000,
-  style: (feature, resolution) => {
-    console.log('in fdaaLayer.js style function')
-    const style = new Style({
-      fill: new Fill({
-        color: 'rgba(111,143,174,0.2)'
-      }),
-      stroke: new Stroke({
-        color: 'rgba(7,7,7,0.8)', 
-        width: 1
-      }),
-      text: new Text({
-        font: '15px Montserrat, sans-serif',
-        fill: new Fill({
-          color: '#000'
-        }),
-        stroke: new Stroke({
-          color: 'rgba(238, 238, 238, 1)',
-          width: 3
-        })
-      })
-    })
-    const zone = feature.get('Fire_Dange')
-    var name = 'FDRA ' + zone
-    var zoneId = 'fdra' + zone
-    // console.log('zone', name)
-    console.log('fdraLayer rendered and got this: ', fdraLevel)
-    if(fdraLevel[zoneId]!==undefined){
-      // console.log('fdraLevel[zoneId]: ', fdraLevel[zoneId], zoneId, fdraLevel)
-      var statuss = fdraLevel[zoneId]
+  // style: (feature, resolution) => {
+  //   console.log('in fdaaLayer.js style function')
+  //   const style = new Style({
+  //     fill: new Fill({
+  //       color: 'rgba(111,143,174,0.2)'
+  //     }),
+  //     stroke: new Stroke({
+  //       color: 'rgba(7,7,7,0.8)', 
+  //       width: 1
+  //     }),
+  //     text: new Text({
+  //       font: '15px Montserrat, sans-serif',
+  //       fill: new Fill({
+  //         color: '#000'
+  //       }),
+  //       stroke: new Stroke({
+  //         color: 'rgba(238, 238, 238, 1)',
+  //         width: 3
+  //       })
+  //     })
+  //   })
+    // const zone = feature.get('Fire_Dange')
+    // var name = 'FDRA ' + zone
+    // var zoneId = 'fdra' + zone
+    // // console.log('zone', name)
+    // console.log('fdraLayer rendered and got this: ', fdraLevel)
+    // if(fdraLevel[zoneId]!==undefined){
+    //   // console.log('fdraLevel[zoneId]: ', fdraLevel[zoneId], zoneId, fdraLevel)
+    //   var statuss = fdraLevel[zoneId]
 
-    }
-    else {
-      var statuss = undefined
-    }
+    // }
+    // else {
+    //   var statuss = undefined
+    // }
     
     // const { status } = fdraLevel['wimsData']['stateObj'] || ''
     // console.log('status', zoneId, statuss)
@@ -76,11 +76,11 @@ const fdaaLayer = fdraLevel => new VectorLayer({
     //   'Extreme': '#f21515',
     // }[lev] || 'rgba(178,171,171,0.6)'
     // console.log('colorr',zoneId, colorr)
-    const color = 'rgba(211,17,78,0.6)'
-    style.getFill().setColor(color)
+    // const color = 'rgba(211,17,78,0.6)'
+    // style.getFill().setColor(color)
     // style.getText().setText(resolution < 5000 ? name : '');
-    return style
-  }        
+    // return style
+  // }        
   // projection: 'EPSG:3857',
   // source: vectorSource,
   // name: 'rawsPoints',
@@ -95,6 +95,6 @@ const fdaaLayer = fdraLevel => new VectorLayer({
 //   return { wimsData }
 // }
 // export default connect(mapStateToProps, null)(fdaaLayer)
-export default fdaaLayer
+export default fdaaLayerSimple
 
 

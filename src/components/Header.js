@@ -1,19 +1,7 @@
-import React, { Component } from 'react'
-class Header extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: [0, 11],
-    }
-  }
+import React, { useState } from 'react'
 
-
-  componentDidUpdate = prevProps => {
-  	// console.log(this.state)
-  	// this.props.setMonths(this.state.value)
-  } 
-	render() {
-		return (
+export function Header(){
+	return (
 			<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 			  <a className="navbar-brand" href="">Dugway Fire Stuff</a>
 			  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,8 +17,8 @@ class Header extends Component {
 			  </div>
 			</nav>
 		)
-  }
 }
 
-export default Header
 
+
+export default Header
