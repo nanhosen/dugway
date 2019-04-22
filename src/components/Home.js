@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import  Info  from './Info'
 import  ERCMap  from './ERCMap'
+import  Grid  from './Grid'
 import { makeReq } from '../actions' 
 
 export class Home extends Component {
@@ -37,8 +38,12 @@ export class Home extends Component {
 		   			<div className="col-12 col-md-8 mt-4 mb-2">
 		          <Info data = {this.props.wimsData.fdraInfo}/>
 		   			</div>
-					</div> 		
-				</div>	
+					</div>
+          <div className="row mx-2 h-100" >
+            <Grid />
+          </div> 		
+				</div>
+
 			)
   	}
   	
