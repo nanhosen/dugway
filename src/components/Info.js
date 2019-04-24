@@ -22,11 +22,11 @@ class Info extends Component {
  function ColumnRender(props){
     var propDat = props.data.data
     var fdraArray = Object.keys(propDat)
-    console.log(propDat)
+    // console.log(propDat)
     // var color = 'rgba(255,193,7,0.6)'
     const cardData = fdraArray.map((curr, i) => {
       var color = propDat[curr]["cardColor"]
-      console.log('propDat', propDat[curr]["layerColor"])
+      // console.log('propDat', propDat[curr]["layerColor"])
       if(propDat[curr]){
         return <div className="col" key={i}>
                  <div className= {`card ${propDat[curr]["cardColor"]}`} style={{height: '500px'}}>

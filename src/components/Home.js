@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+
+
 import  Info  from './Info'
 import  ERCMap  from './ERCMap'
 import  Grid  from './Grid'
-import { makeReq } from '../actions' 
+import Chart from'./ChartTest'
 
 export class Home extends Component {
 	constructor(props) {
@@ -12,6 +14,7 @@ export class Home extends Component {
   }
   componentDidMount(){
   	// this.makeReq()
+    // dispatch(makeReq())
   	// console.log('home mount this', this)
   }
 
@@ -26,7 +29,7 @@ export class Home extends Component {
   		)
   	}
   	else{
-  		console.log('dataaa Home', this)
+  		// console.log('dataaa Home', this)
 			return (
 				<div>
 					<div className="row mx-2 h-100" >
@@ -39,11 +42,7 @@ export class Home extends Component {
 		          <Info data = {this.props.wimsData.fdraInfo}/>
 		   			</div>
 					</div>
-          <div className="row mx-2 h-100" >
-            <Grid />
-          </div> 		
 				</div>
-
 			)
   	}
   	

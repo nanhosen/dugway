@@ -5,11 +5,14 @@ import VectorSource from 'ol/source/Vector.js'
 import { Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 import GeoJSON from 'ol/format/GeoJSON'
 
-import { WIMS_DATA } from './types'
+import { WIMS_DATA, ARCHIVE_DATA, OBS_DATA } from './types'
 import { FETCH_DATA } from './types'
 
 import { getText } from '../components/things/getText'
 import fdaaLayer1 from '../layers/fdaaLayer1'
+import archiveData from '../data/archiveData'
+
+// console.log(archiveData)
 
 // export function makeReq(day1,month1,year1,day2,month2,year2,day3,month3,year3){
 function makeAvg(array){
@@ -26,27 +29,32 @@ export function makeReq() {
     
     Promise.all(axiosArray.map(url => axios.get(url)))
     .then(values => {
+      // console.log('values', values)
       var fdraInfo = {
         fdra1: {
-          stations: [420913],
+          // stations: [420913],
+          stations: [260117],
           jolValAr: [],
           avgJolIndex: null,
           prettyName: 'FDRA 1'
         },
         fdra2: {
-          stations: [420916],
+          // stations: [420916],
+          stations: [260117],
           jolValAr: [],
           avgJolIndex: null,
           prettyName: 'FDRA 2'
         },
         fdra3: {
-          stations: [420916],
+          // stations: [420916],
+          stations: [260117],
           jolValAr: [],
           avgJolIndex: null,
           prettyName: 'FDRA 3'
         },
         fdra4: {
-          stations: [420917],
+          // stations: [420917],
+          stations: [260117],
           jolValAr: [],
           avgJolIndex: null,
           prettyName: 'FDRA 4'
@@ -54,7 +62,7 @@ export function makeReq() {
       }
 
       var fdraArray = Object.keys(fdraInfo)
-      console.log(fdraArray)
+      // console.log(fdraArray)
       // function below goes through each fdra and puts jolley index vals in an array called jolValArr. If there were two stations 
       //want it to looklike this:
        // [[ stn1day1val, stn2day1val, stn3day1val ], [ stn1day2val, stn2day2val, stn3day2val ], [ stn1val, stn2val, stn3val ]]
@@ -63,7 +71,7 @@ export function makeReq() {
       // day3 [stn1val, stn2val, stn3val ]
       //the 0 is for the first station and the 1 is for the second station. The values inside the array for each station represent the values for each day
       fdraArray.map(currFdra => {
-        console.log('current fdra: ', currFdra)
+        // console.log('current fdra: ', currFdra)
         var stnArray = fdraInfo[currFdra].stations
         var fdraArray = [] // has 3 values, one value of averaged index for all stations for each day. each value in array represents one day
         values.map((curDay, i) => {
@@ -82,10 +90,10 @@ export function makeReq() {
         fdraInfo[currFdra] = addObj
       })
 
-      console.log(fdraInfo)
+      // console.log(fdraInfo)
       
-      var payload = { fdraInfo }
-      console.log(payload, 'payload')
+      var payload = { fdraInfo, archiveData }
+      // console.log(payload, 'payload')
       dispatch({ type: WIMS_DATA, payload })
         
 
@@ -96,6 +104,67 @@ export function makeReq() {
     // console.log(axiosArray)
   }
 
+}
+
+
+export function getArchive(months) {
+  const payload = archiveData
+  // console.log('archiveData payload', payload)
+  return {
+    type: ARCHIVE_DATA,
+    payload
+  }
+}
+
+export function getLatest(){
+  return function(dispatch){
+    const stns = ['DPG25', 'DPG24', 'DPG26'] 
+    const obsData = 
+      [
+        {
+          stid: 'DPG25',
+          wimsId: 420913,
+          name: null,
+          obs: null
+        },
+        {
+          stid: 'DPG24',
+          wimsId: 420916,
+          name: null,
+          obs: null
+        },
+        {
+          stid: 'DPG26',
+          wimsId: 420917,
+          name: null,
+          obs: null
+        }
+
+      ]
+    const axiosArray = stns.map(curr => {
+      return 'https://api.synopticdata.com/v2/stations/nearesttime?&token=ea0ea69fd87b4eac81bfc08cb270b8e8&output=json&stid=' + curr
+    })
+    Promise.all(axiosArray.map (url => axios.get(url)))
+    .then(values => {
+      console.log('values', values)
+      values.map(curr => {
+        var valStnId = curr.data.STATION[0].STID
+        obsData.map((currPos,i) => {
+          if(valStnId == currPos.stid){
+            console.log(obsData[i], valStnId, curr.data.STATION[0].OBSERVATIONS)
+            obsData[i].obs = curr.data.STATION[0].OBSERVATIONS
+            obsData[i].name = curr.data.STATION[0].NAME
+          }
+        })
+      })
+      console.log('obsData', obsData)
+      var payload = { obsData }
+      dispatch ({ type: OBS_DATA, payload})
+    })
+    .catch(function(err){
+      console.log(err.message)
+    })
+  }
 }
 
 

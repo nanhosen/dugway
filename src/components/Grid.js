@@ -52,7 +52,7 @@ function RenderTable(props){
   // while(heightInit < height){
   //   console.log(heightInit)
   //   height ++
-  console.log(props)
+  // console.log(props)
   var result = 0;
   var hgt = 0;
   var wid = 0;
@@ -62,7 +62,7 @@ function RenderTable(props){
   do {
     result = result + hgt;
     hgt = hgt + 1;
-    console.log(hgt)
+    // console.log(hgt)
     arrayH.push(hgt)
   } while (hgt < 5);
 
@@ -71,12 +71,12 @@ function RenderTable(props){
   //   wid = wid + 1;
   //   arrayW.push(wid)
   // } while (wid < height);
-  console.log(arrayH)
-  const gridData = arrayH.map(currH => {
-    console.log(currH)
-    return <div className="row"> {giveWidth()}</div>
+  // console.log(arrayH)
+  const gridData = arrayH.map((currH, i) => {
+    // console.log(currH)
+    return <div key={i} className="row"> {giveWidth()}</div>
   })
-  console.log(gridData)
+  // console.log(gridData)
   return gridData
 
 
@@ -93,17 +93,17 @@ function giveWidth(){
   do {
     result = result + hgt;
     hgt = hgt + 1;
-    console.log(hgt)
+    // console.log(hgt)
     arrayH.push(hgt)
   } while (hgt < 5);
   const gridData1 = arrayH.map((currH, i) => {
-    console.log(currH)
-    return  <div className="col">
+    // console.log(currH)
+    return  <div key={i} className="col">
             {`card ${i} of ${arrayH.length}`}
           </div>
           
   })
-  console.log(gridData1)
+  // console.log(gridData1)
   return gridData1
 
 }
