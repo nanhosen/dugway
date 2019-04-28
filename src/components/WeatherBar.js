@@ -7,6 +7,9 @@ import  ERCMap  from './ERCMap'
 import  Grid  from './Grid'
 import Chart from'./ChartTest'
 
+import { WiFahrenheit, WiDirectionUp, WiDirectionUpRight, WiDirectionRight, WiDirectionDownRight, WiDirectionDown, WiDirectionDownLeft, WiDirectionLeft, WiDaySunny } from 'react-icons/wi';
+
+
 import '../style/css/weather-icons-wind.css'
 import '../style/css/weather-icons-wind.min.css'
 import '../style/css/weather-icons.css'
@@ -48,8 +51,8 @@ export class WeatherBar extends Component {
   		console.log(temp,'temp', windDir)
 			return (
 				<nav className="navbar navbar-expand-lg navbar-light bg-light">
-				  <i className="wi wi-day-sunny" fontSize='25px'></i>
-				  {temp}<i className="wi wi-fw wi-night-sleet"></i><i className={arrow} fontSize='25px'></i>
+				  <WiDaySunny size={30} />
+				  {temp} <WiFahrenheit size={30}/><i className={arrow} fontSize='25px'></i>
 				</nav>
 			)
   	}

@@ -31,7 +31,20 @@ class Chart extends Component {
         name: 'ERC',
         line: {
           color: 'rgb(219, 64, 82)',
-          width: 3
+          width: 2
+        }
+      }
+
+      var biObj = {
+        x:[],
+        y:[],
+        yaxis: 'y2',
+        type: 'scatter', 
+        name: 'BI',
+        line: {
+          color: '#062a4e',
+          width: 2,
+          dash: 'dot'
         }
       }
       dateArray.map((curr, i) => {
@@ -47,25 +60,18 @@ class Chart extends Component {
         // console.log(formattedDate,'new',  newDate)
         jolIndObj['x'].push(newDate)
         ercObj['x'].push(newDate)
+        biObj['x'].push(newDate)
         jolIndObj['marker']['color'].push(getBarColor(allData[curr][stn]['jolInd']))
         jolIndObj['y'].push(parseInt(allData[curr][stn]['jolInd']))
         ercObj['y'].push(parseInt(allData[curr][stn]['erc']))
+        biObj['y'].push(parseInt(allData[curr][stn]['bi']))
 
       })
     }
     var firstDate = jolIndObj.x[0]
-    var trace1 = {
-      x: ['a', 'b', 'c', 'd'],
-      y: [10, 15, 13, 17],
-      type: 'bar'
-    };
+    console.log(biObj)
 
-    var trace2 = {
-      x: ['a', 'b', 'c', 'd'],
-      y: [16, 5, 11, 9],
-      type: 'scatter'
-    }
-    var chartData = [jolIndObj, ercObj]
+    var chartData = [jolIndObj, biObj, ercObj]
     return (
       <Plot
         data = { chartData }
@@ -79,7 +85,7 @@ class Chart extends Component {
               range: [0,5]
             },
             yaxis2: {
-              title: 'ERC',
+              title: 'BI',
               titlefont: {color: 'rgb(148, 103, 189)'},
               tickfont: {color: 'rgb(148, 103, 189)'},
               overlaying: 'y',

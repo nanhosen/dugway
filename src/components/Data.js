@@ -41,7 +41,7 @@ export class Data extends Component {
           <div className="row mx-2 h-100" >
             <HighChart />
           </div>
-          <div className="row mx-2 h-100" >
+          <div>
             <ObTest />
           </div>  
 				</div>
