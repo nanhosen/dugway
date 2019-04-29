@@ -69,7 +69,7 @@ class Chart extends Component {
       })
     }
     var firstDate = jolIndObj.x[0]
-    console.log(biObj)
+    // console.log(biObj)
 
     var chartData = [jolIndObj, biObj, ercObj]
     return (
@@ -79,7 +79,7 @@ class Chart extends Component {
           {
             width: 700, 
             height: 500, 
-            title: `ERC and the matt jolly index thing: ${stn}`,
+            title: `ERC, BI, and JI for station ${stn}`,
             yaxis: {
               title: 'Jolly Index',
               range: [0,5]

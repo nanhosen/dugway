@@ -146,18 +146,18 @@ export function getLatest(){
     })
     Promise.all(axiosArray.map (url => axios.get(url)))
     .then(values => {
-      console.log('values', values)
+      // console.log('values', values)
       values.map(curr => {
         var valStnId = curr.data.STATION[0].STID
         obsData.map((currPos,i) => {
           if(valStnId == currPos.stid){
-            console.log(obsData[i], valStnId, curr.data.STATION[0].OBSERVATIONS)
+            // console.log(obsData[i], valStnId, curr.data.STATION[0].OBSERVATIONS)
             obsData[i].obs = curr.data.STATION[0].OBSERVATIONS
             obsData[i].name = curr.data.STATION[0].NAME
           }
         })
       })
-      console.log('obsData', obsData)
+      // console.log('obsData', obsData)
       var payload = { obsData }
       dispatch ({ type: OBS_DATA, payload})
     })

@@ -6,7 +6,7 @@ import Chart from'./ChartTest'
 import HighChart from'./HighChartTest'
 import ObTest from'./ObTest'
 
-export class Data extends Component {
+export class StationPage extends Component {
 	constructor(props) {
     super(props)
   }
@@ -33,15 +33,12 @@ export class Data extends Component {
       // console.log('stnArray', stnArray)
 			return (
 				<div>
-          <div className="row mx-2 h-100" >
-            <MakeChart stnArray={stnArray} />
-          </div>
-          <div className="row mx-2 h-100" >
-            <HighChart />
-          </div>
           <div>
-            <ObTest />
+            <ObTest stn = { stnSelected }/>
           </div>  
+          <div className="row mx-2 h-100" >
+            <Chart stn={ stnSelected } />
+          </div>
 				</div>
 			)
   	}
@@ -64,5 +61,5 @@ const mapStateToProps = reduxState => {
   // console.log('this home state', state)
   return state
 }
-export default connect(mapStateToProps)(Data)
+export default connect(mapStateToProps)(StationPage)
 // export default connect(mapStateToProps, { makeReq })( Home )

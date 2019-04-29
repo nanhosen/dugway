@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import Data from './components/Data'
+import StationPage from './components/StationPage'
 import Home from './components/Home'
 import Header from './components/Header'
 import WeatherBar from './components/WeatherBar'
@@ -15,6 +16,18 @@ const routes = [
 
 	{ path: '/data',
 		component: Data,
+		exact: true
+	},
+	{ path: '/420913',
+		component: StationPage,
+		exact: true
+	},
+	{ path: '/420916',
+		component: StationPage,
+		exact: true
+	},
+	{ path: '/420917',
+		component: StationPage,
 		exact: true
 	},
 	{ 

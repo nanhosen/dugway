@@ -43,16 +43,15 @@ export class WeatherBar extends Component {
   		)
   	}
   	else{
-  		// console.log('dataaa WeatherBar', this.props.obsData)
+  		console.log('dataaa WeatherBar', this.props)
   		var temp = Math.round((this.props.obsData.obsData[0].obs.air_temp_value_1.value * 1.8) + 32)
   		var windDir = this.props.obsData.obsData[0].obs.wind_cardinal_direction_value_1d.value
   		var windSpeed = this.props.obsData.obsData[0].obs.wind_direction_value_1.value
   		var arrow = getWindArrow(windDir)
-  		console.log(temp,'temp', windDir)
+  		// console.log(temp,'temp', windDir)
 			return (
 				<nav className="navbar navbar-expand-lg navbar-light bg-light">
-				  <WiDaySunny size={30} />
-				  {temp} <WiFahrenheit size={30}/><i className={arrow} fontSize='25px'></i>
+          <MakeBarButton data = {this.props}/>
 				</nav>
 			)
   	}
@@ -73,6 +72,30 @@ function getWindArrow(windDir){
 		NW: 'wi wi-wind wi-towards-313-deg'
 	}
 	return dirObj[windDir]
+}
+
+function MakeBarButton(data){
+  console.log('data', data)
+  return data.data.obsData.obsData.map((curr) => {
+    var temp =  Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32)
+    var curStn = curr.wimsId
+    // `string text ${expression} string text`
+      // return <Link className="nav-link" to="/" + curr.wimsID>
+      // <Link to={`/lists/${props.list._id}`}>{props.list.name}</Link>
+      return <Link className="nav-link" to={`/${curStn}`}>
+        <button type="button" class="btn btn-light">
+          {curr.name} <WiDaySunny size={30} />
+          { temp } <WiFahrenheit size={30}/><WiDirectionUp />
+        </button>
+      </Link>
+
+  })
+  // return data.stnArray.map((curr,i) => {
+  //   return <div key={i} className="col"> 
+  //             <Chart stn={curr} />
+  //           </div>  
+
+  // })
 }
 
 const mapStateToProps = reduxState => {
