@@ -54,33 +54,33 @@ var jolSwitch = avg => ({
 	1: {
 		precautions: 'No precautions needed',
 		level: 'Low',
-		cardColor: 'rgba(40,166,69,0.3)',
+		cardColor: '#28a745',
 		textColor: 'white',
-		layerColor: 'rgba(40,166,69,0.6)'	
+		layerColor: 'rgba(40,167,69,0.6)'	
 	},
 	2: {
-		precautions: 'Extra water and fire tools needed',
-		level: 'Moderate',
-		cardColor: 'rgba(255,193,7,0.3)',
-		layerColor: 'rgba(255,193,7,0.6)'
+		precautions: 'No precautions needed',
+		level: 'Low',
+		cardColor: '#28a745',
+		layerColor: 'rgba(40,167,69,0.6)'
 	},
 	3: {
 		precautions: 'Extra water and fire tools needed',
-		level: 'High',
-		cardColor: 'rgba(253,126,20,0.3)',
-		layerColor: 'rgba(253,126,20,0.6)'
+		level: 'Moderate',
+		cardColor: '#ffec07',
+		layerColor: 'rgba(255, 236, 7, 0.6)'
 	},
 	4: {
-		precautions: 'Extra water and fire tools needed',
-		level: 'Very High',
-		cardColor: 'rgba(189,33,48,0.3)',
-		layerColor: 'rgba(189,33,48,0.6)'
+		precautions: 'Firing operations not permitted',
+		level: 'High',
+		cardColor: '#dc3545',
+		layerColor: 'rgba(220,53,69,0.8)'
 	},
 	5: {
-		precautions: 'Extra water and fire tools needed',
-		level: 'Extreme',
-		cardColor: 'rgba(102,16,242,0.3)',
-		layerColor: 'rgba(102,16,242,0.6)'
+		precautions: 'Firing operations not permitted',
+		level: 'High',
+		cardColor: '#dc3545',
+		layerColor: 'rgba(220,53,69,0.8)'
 	},
 })[avg]
 

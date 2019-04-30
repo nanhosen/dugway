@@ -7,19 +7,19 @@ import  ERCMap  from './ERCMap'
 import  Grid  from './Grid'
 import Chart from'./ChartTest'
 
-import { WiFahrenheit, WiDirectionUp, WiDirectionUpRight, WiDirectionRight, WiDirectionDownRight, WiDirectionDown, WiDirectionDownLeft, WiDirectionLeft, WiDaySunny } from 'react-icons/wi';
+import { WiFahrenheit, WiDirectionUp, WiDirectionUpRight, WiDirectionRight, WiDirectionDownRight, WiDirectionDown, WiDirectionDownLeft, WiDirectionLeft, WiDirectionUpLeft, WiDaySunny } from 'react-icons/wi';
 
 
-import '../style/css/weather-icons-wind.css'
-import '../style/css/weather-icons-wind.min.css'
-import '../style/css/weather-icons.css'
-import '../style/css/weather-icons.min.css'
+// import '../style/css/weather-icons-wind.css'
+// import '../style/css/weather-icons-wind.min.css'
+// import '../style/css/weather-icons.css'
+// import '../style/css/weather-icons.min.css'
 
-import '../style/font/weathericons-regular-webfont.eot'
-import '../style/font/weathericons-regular-webfont.svg'
-import '../style/font/weathericons-regular-webfont.ttf'
-import '../style/font/weathericons-regular-webfont.woff'
-import '../style/font/weathericons-regular-webfont.woff2'
+// import '../style/font/weathericons-regular-webfont.eot'
+// import '../style/font/weathericons-regular-webfont.svg'
+// import '../style/font/weathericons-regular-webfont.ttf'
+// import '../style/font/weathericons-regular-webfont.woff'
+// import '../style/font/weathericons-regular-webfont.woff2'
 
 
 export class WeatherBar extends Component {
@@ -43,11 +43,11 @@ export class WeatherBar extends Component {
   		)
   	}
   	else{
-  		console.log('dataaa WeatherBar', this.props)
-  		var temp = Math.round((this.props.obsData.obsData[0].obs.air_temp_value_1.value * 1.8) + 32)
-  		var windDir = this.props.obsData.obsData[0].obs.wind_cardinal_direction_value_1d.value
-  		var windSpeed = this.props.obsData.obsData[0].obs.wind_direction_value_1.value
-  		var arrow = getWindArrow(windDir)
+  		// console.log('dataaa WeatherBar', this.props)
+  		// var temp = Math.round((this.props.obsData.obsData[0].obs.air_temp_value_1.value * 1.8) + 32)
+  		// var windDir = this.props.obsData.obsData[0].obs.wind_cardinal_direction_value_1d.value
+  		// var windSpeed = this.props.obsData.obsData[0].obs.wind_direction_value_1.value
+  		// var arrow = GetWindArrow(windDir)
   		// console.log(temp,'temp', windDir)
 			return (
 				<nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -60,32 +60,46 @@ export class WeatherBar extends Component {
 }
 
 // export default connect(reduxState => reduxState, { makeReq })(WeatherBar)
-function getWindArrow(windDir){
+function GetWindArrow(data){
+  // console.log(data.data)
+  // var size = ()
 	var dirObj = {
-		N: 'wi wi-wind wi-towards-0-deg',
-		NE: 'wi wi-wind wi-towards-45-deg',
-		E: 'wi wi-wind wi-towards-90-deg',
-		SE: 'wi wi-wind wi-from-313-deg',
-		S: 'wi wi-wind wi-towards-180-deg',
-		SW: 'wi wi-wind wi-towards-225-deg',
-		W: 'wi wi-wind wi-towards-270-deg',
-		NW: 'wi wi-wind wi-towards-313-deg'
+		N: <WiDirectionUp />,
+    NNE: <WiDirectionUp />,
+    NE: <WiDirectionUpRight />,
+		ENE: <WiDirectionUpRight />,
+		E: <WiDirectionRight />,
+    ESE: <WiDirectionRight />,
+    SE: <WiDirectionDownRight />,
+		SSE: <WiDirectionDownRight />,
+		S: <WiDirectionDown />,
+    SSW: <WiDirectionDown />,
+    SW: <WiDirectionDownLeft />,
+		WSW: <WiDirectionDownLeft />,
+		W: <WiDirectionLeft />,
+    WNW: <WiDirectionLeft />,
+    NW: <WiDirectionUpLeft />,
+    NNW: <WiDirectionUpLeft />
 	}
-	return dirObj[windDir]
+  // return dirObj["N"]
+	return dirObj[data.data]
 }
 
 function MakeBarButton(data){
-  console.log('data', data)
-  return data.data.obsData.obsData.map((curr) => {
+  // console.log('data', data)
+  return data.data.obsData.obsData.map((curr, i) => {
     var temp =  Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32)
     var curStn = curr.wimsId
+    var windDir = curr.obs.wind_cardinal_direction_value_1d.value
+    var windSpeed = (curr.obs.wind_speed_value_1) ? `${Math.round(curr.obs.wind_speed_value_1.value)} mph` : null
+
     // `string text ${expression} string text`
       // return <Link className="nav-link" to="/" + curr.wimsID>
       // <Link to={`/lists/${props.list._id}`}>{props.list.name}</Link>
-      return <Link className="nav-link" to={`/${curStn}`}>
-        <button type="button" class="btn btn-light">
+      return <Link key={i} className="nav-link" to={`/${curStn}`}>
+        <button type="button" className="btn btn-light">
           {curr.name} <WiDaySunny size={30} />
-          { temp } <WiFahrenheit size={30}/><WiDirectionUp />
+          { temp } &deg; { windSpeed } <GetWindArrow data = { windDir } />
         </button>
       </Link>
 

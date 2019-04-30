@@ -35,28 +35,28 @@ export function makeReq() {
           stations: [420913],
           // stations: [260117],
           jolValAr: [],
-          avgJolIndex: 1,
+          avgJolIndex: null,
           prettyName: 'FDRA 1'
         },
         fdra2: {
           stations: [420916],
           // stations: [260117],
           jolValAr: [],
-          avgJolIndex: 2,
+          avgJolIndex: null,
           prettyName: 'FDRA 2'
         },
         fdra3: {
           stations: [420916],
           // stations: [260117],
           jolValAr: [],
-          avgJolIndex: 3,
+          avgJolIndex: null,
           prettyName: 'FDRA 3'
         },
         fdra4: {
           stations: [420917],
           // stations: [260117],
           jolValAr: [],
-          avgJolIndex: 5,
+          avgJolIndex: null,
           prettyName: 'FDRA 4'
         }
       }
@@ -71,11 +71,11 @@ export function makeReq() {
       // day3 [stn1val, stn2val, stn3val ]
       //the 0 is for the first station and the 1 is for the second station. The values inside the array for each station represent the values for each day
       fdraArray.map(currFdra => {
-        console.log('current fdra: ', currFdra)
+        // console.log('current fdra: ', currFdra)
         var stnArray = fdraInfo[currFdra].stations
         var fdraArray = [] // has 3 values, one value of averaged index for all stations for each day. each value in array represents one day
         values.map((curDay, i) => {
-          // console.log(curDay)
+          console.log(curDay)
           var dayArray = [] // day array has the value for each station for each day. So, if there are 3 stations there will be 3 vals, 1 station 1 value
           stnArray.map((curStn, j) => {
             dayArray.push(curDay['data'][curStn]['jolInd']) 
@@ -84,10 +84,10 @@ export function makeReq() {
           fdraArray.push(dayAvg)
           fdraInfo[currFdra]['jolValAr'].push(dayArray)
         })
-        // fdraInfo[currFdra]['avgJolIndex'] = makeAvg(fdraArray)
-        // console.log(fdraInfo[currFdra]['avgJolIndex'])
-        // var returnText = getText(makeAvg(fdraArray))
-        var returnText = getText(fdraInfo[currFdra]['avgJolIndex'])
+        fdraInfo[currFdra]['avgJolIndex'] = makeAvg(fdraArray)
+        console.log(makeAvg(fdraArray))
+        var returnText = getText(makeAvg(fdraArray))
+        // var returnText = getText(5)
         var addObj = { ...fdraInfo[currFdra], ...returnText}
         fdraInfo[currFdra] = addObj
       })
@@ -120,17 +120,6 @@ export function getArchive(months) {
 
 export function getLatest(){
   return function(dispatch){
-    var nowDate = new Date(Date.now())
-    var begDate = new Date().setDate(new Date().getDate()-3) //3 days of history
-    var begMonth = new Date(begDate).getUTCMonth() + 1
-    var nowMonth = nowDate.getUTCMonth() + 1
-    if(nowMonth<10){
-      nowMonth = `0${nowMonth}`
-    }
-    var endDate = addZero(nowDate.getUTCFullYear()) + addZero(nowMonth)+addZero(nowDate.getUTCDate())+addZero(nowDate.getUTCHours())+addZero(nowDate.getUTCMinutes())
-    var startDate = addZero(new Date(begDate).getUTCFullYear()) + addZero(begMonth) + addZero(new Date(begDate).getUTCDate()) + addZero(new Date(begDate).getUTCHours()) +  addZero(new Date(begDate).getUTCMinutes())
-    console.log(startDate, endDate)
-    // start=201904290000&end=201904292234
     const stns = ['DPG25', 'DPG24', 'DPG26'] 
     const obsData = 
       [
@@ -179,58 +168,6 @@ export function getLatest(){
     })
   }
 }
-
-// export function getTimeSeries(){
-//   return function(dispatch){
-//     const stns = ['DPG25', 'DPG24', 'DPG26'] 
-//     const obsData = 
-//       [
-//         {
-//           stid: 'DPG25',
-//           wimsId: 420913,
-//           name: null,
-//           obs: null
-//         },
-//         {
-//           stid: 'DPG24',
-//           wimsId: 420916,
-//           name: null,
-//           obs: null
-//         },
-//         {
-//           stid: 'DPG26',
-//           wimsId: 420917,
-//           name: null,
-//           obs: null
-//         }
-
-//       ]
-//     const axiosArray = stns.map(curr => {
-//       return `https://api.synopticdata.com/v2/stations/timeseries?&token=ea0ea69fd87b4eac81bfc08cb270b8e8&stid=${curr}&start=${startTime}&end=${endTime}`
-//     })
-//     Promise.all(axiosArray.map (url => axios.get(url)))
-//     .then(values => {
-//       // console.log('values', values)
-//       values.map(curr => {
-//         var valStnId = curr.data.STATION[0].STID
-//         obsData.map((currPos,i) => {
-//           if(valStnId == currPos.stid){
-//             // console.log(obsData[i], valStnId, curr.data.STATION[0].OBSERVATIONS)
-//             obsData[i].obs = curr.data.STATION[0].OBSERVATIONS
-//             obsData[i].name = curr.data.STATION[0].NAME
-//           }
-//         })
-//       })
-//       // console.log('obsData', obsData)
-//       var payload = { obsData }
-//       dispatch ({ type: OBS_DATA, payload})
-//     })
-//     .catch(function(err){
-//       console.log(err.message)
-//     })
-//   }
-// }
-
 
 
 
@@ -301,7 +238,3 @@ export function getLatest(){
 // export default fdaaLayer
 
 
-function addZero(number){
-  var length = number.toString().length
-  return length < 2 ? `0${number}` : number.toString()
-}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import Grid  from './Grid'
 import Chart from'./ChartTest'
-import HighChart from'./HighChartTest'
+import ObsChart from'./ObsChart'
 import ObTest from'./ObTest'
 
 export class StationPage extends Component {
@@ -32,14 +32,30 @@ export class StationPage extends Component {
       var stnArray = Object.keys(this.props.archiveData[Object.keys(this.props.archiveData)[0]])
       // console.log('stnArray', stnArray)
 			return (
-				<div>
-          <div>
-            <ObTest stn = { stnSelected }/>
-          </div>  
-          <div className="row mx-2 h-100" >
-            <Chart stn={ stnSelected } />
+				<div className="container">
+          <div className="row">
+            <div className="col-md-auto">
+              <ObTest stn = { stnSelected }/>
+            </div>
+            <div className="col-md-auto">
+              
+            </div>
+            <div className="col-md-auto">
+              
+            </div>
           </div>
-				</div>
+          <div className="row">
+            <div className="col-md-auto">
+              <Chart stn={ stnSelected } />
+            </div>
+            <div className="col-md-auto">
+              <ObsChart />
+            </div>
+            <div className="col col-lg-2">
+             
+            </div>
+          </div>
+        </div>
 			)
   	}
   	

@@ -14,14 +14,14 @@ import { WiFahrenheit, WiDirectionUp, WiDirectionUpRight, WiDirectionRight, WiDi
 
 
 
-export class ObTest extends Component {
+export class Forecast extends Component {
 	constructor(props) {
     super(props)
   }
   componentDidMount(){
   	// this.makeReq()
     // dispatch(makeReq())
-  	// console.log('ObTest mount this', this)
+  	// console.log('Forecast mount this', this)
   }
 
   componentDidUpdate(){
@@ -41,13 +41,13 @@ export class ObTest extends Component {
   		)
   	}
   	else{
-  		// console.log('this ObTest', this)
+  		console.log('this Forecast', this)
   		var station = this.props.stn
   		var obObject = {}
   		this.props.obsData.obsData.map((curr,i)=>{
   			// console.log('curr.name', curr.name)
   			if(curr.wimsId == station){
-  				// console.log('matchy!')
+  				console.log('matchy!')
 	  			var name = curr.name
 	  			var temp = Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32)
 	  			var windDir = curr.obs.wind_cardinal_direction_value_1d.value
@@ -84,7 +84,7 @@ export class ObTest extends Component {
   		// var firstData = this.props.obsData
 			return (
 				<div className="card">
-					<h5 className="card-title">Current Conditions</h5>
+					<h5 className="card-title">Tomorrow's Forecast</h5>
 					<div className="card-body">
 						<div className="d-flex flex-nowrap flex-shrink">
 				      <MakeOb data = {obObject} style = {style} />
@@ -99,7 +99,7 @@ export class ObTest extends Component {
 				
 
 function MakeOb(props){
-	// console.log('props', props)
+	console.log('props', props)
 	// var stnData = props.data
 	// var curOb = inData[0]
 	var style = props.style
@@ -119,7 +119,7 @@ function MakeOb(props){
 		  		Temp
 		  	</div>
 		  	<div>
-		  		<span className="text-nowrap align-middle">{props.data.temp}&deg;</span>
+		  		<span className="text-nowrap align-middle">{props.data.temp}<WiFahrenheit size={30}/></span>
 		  	</div>
 		  </div>
 		  <div className="p-2">
@@ -137,24 +137,18 @@ function MakeOb(props){
 		  	</div>
 		  	<div>{ displaySpeed }</div>
 		  </div>
-		  <div className="p-2">
-		  	<div>RH</div>
-		  	<div>
-		  		{props.data.rh} %
-		  	</div>
-		  </div>
 		</React.Fragment>	
 	)
 }
 
 
-// export default connect(reduxState => reduxState, { makeReq })(ObTest)
+// export default connect(reduxState => reduxState, { makeReq })(Forecast)
 function GetWindArrow(data){
-  // console.log(data.data)
+  console.log(data.data)
   var speed = (data.data[1]) ? data.data[1] : 1
   // var size = speed * 10
   var size = 30
-  // console.log('size', size)
+  console.log('size', size)
 	var dirObj = {
 		N: <WiDirectionUp size ={size} />,
     NNE: <WiDirectionUp size ={size} />,
@@ -180,8 +174,8 @@ function GetWindArrow(data){
 
 const mapStateToProps = reduxState => {
   const state = reduxState
-  // console.log('this ObTest state', state)
+  // console.log('this Forecast state', state)
   return state
 }
-export default connect(mapStateToProps)(ObTest)
+export default connect(mapStateToProps)(Forecast)
 // export default connect(mapStateToProps, { makeReq })( Home )
