@@ -8,9 +8,10 @@ class Chart extends Component {
     super(props)
   }
   render() {
-    // console.log('chart this', this)
+    console.log('chart this', this)
     var stn = this.props.stn
     var allData = this.props.archiveData
+    console.log('other name', allData)
     if(allData){
 
       var dateArray = Object.keys(allData)
@@ -18,7 +19,7 @@ class Chart extends Component {
         x:[],
         y:[],
         type: 'bar', 
-        name: 'Jolly Index',
+        name: 'SFWPI',
         marker: {
           color: []
         }
@@ -48,7 +49,7 @@ class Chart extends Component {
         }
       }
       dateArray.map((curr, i) => {
-        // console.log(allData[curr], curr, stn)
+        console.log(allData[curr], curr, stn)
         var date = new Date(curr)
         var upMonth = date.getMonth() + 1
         var newDate = date.getFullYear() + '-' + upMonth + '-' + date.getDate()
@@ -79,7 +80,7 @@ class Chart extends Component {
           {
             width: 700, 
             height: 500, 
-            title: `ERC, BI, and JI for station ${stn}`,
+            title: `ERC, BI, and SFWPI for station ${stn}`,
             yaxis: {
               title: 'Jolly Index',
               range: [0,5]

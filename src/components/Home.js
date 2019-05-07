@@ -22,24 +22,39 @@ export class Home extends Component {
   	// console.log('updated this', this)
   }
   render = () => {
-  	if(!this.props.wimsData.fdraInfo){
+  	if(!this.props.forecastData){
   		// console.log('noooo data', this)
   		return(
   			<div>Loading</div>
   		)
   	}
   	else{
-  		// console.log('dataaa Home', this)
+  		console.log('dataaa Home', this)
+      var fdraArray = Object.keys(this.props.forecastData)
+      var obDate = [] 
+      var date
+      fdraArray.map( currFdra => 
+        {
+          obDate.push(this.props.forecastData[currFdra].forecastDate) 
+          if(this.props.forecastData[currFdra].forecastDate){
+            date = this.props.forecastData[currFdra].forecastDate
+          }
+          return date
+        }
+      )
+      
+      console.log('obDadte', date)  
 			return (
 				<div>
 					<div className="row mx-2 h-100" >
 						<div className="mt-4 col-12 col-md-4 mb-2 h"> 
 			      	<div className="card h-100"> 
-		          	<ERCMap data = {this.props.wimsData.fdraInfo}/>
-		    		 	</div> 
+		          	<ERCMap data = {this.props.forecastData}/>
+                <footer className="text-center"><b>Fire Danger Forecast for {date}</b></footer>
+		    		 	</div>
 		   			</div> 
 		   			<div className="col-12 col-md-8 mt-4 mb-2">
-		          <Info data = {this.props.wimsData.fdraInfo}/>
+		          <Info data = {this.props.forecastData}/>
 		   			</div>
 					</div>
 				</div>

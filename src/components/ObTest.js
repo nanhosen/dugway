@@ -41,20 +41,21 @@ export class ObTest extends Component {
   		)
   	}
   	else{
-  		// console.log('this ObTest', this)
+  		console.log('this ObTest', this)
   		var station = this.props.stn
   		var obObject = {}
   		this.props.obsData.obsData.map((curr,i)=>{
   			// console.log('curr.name', curr.name)
   			if(curr.wimsId == station){
   				// console.log('matchy!')
+  				console.log(curr)
 	  			var name = curr.name
-	  			var temp = Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32)
+	  			var temp = curr.obs.air_temp_value_1 ? Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32) : ''
 	  			var windDir = curr.obs.wind_cardinal_direction_value_1d.value
 	  			var windSpeed = (curr.obs.wind_speed_value_1) ? Math.round(curr.obs.wind_speed_value_1.value) : null
 	  			var rh = Math.round(curr.obs.relative_humidity_value_1.value)
-  				var tD = Math.round((curr.obs.dew_point_temperature_value_1d.value * 1.8) + 32)
-  				var timeStamp = curr.obs.air_temp_value_1.date_time
+  				var tD = curr.obs.dew_point_temperature_value_1d ? Math.round((curr.obs.dew_point_temperature_value_1d.value * 1.8) + 32): ''
+  				var timeStamp = curr.obs.wind_cardinal_direction_value_1d.date_time
 		  		var date = new Date(timeStamp)
 		  		var formattedDate = new Intl.DateTimeFormat('en-US',{ 
 		          year: '2-digit', 

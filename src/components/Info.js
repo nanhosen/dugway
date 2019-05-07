@@ -21,6 +21,7 @@ class Info extends Component {
 
  function ColumnRender(props){
     var propDat = props.data.data
+    // console.log(propDat)
     var fdraArray = Object.keys(propDat)
     // console.log(propDat)
     // var color = 'rgba(255,193,7,0.6)'

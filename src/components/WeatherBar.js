@@ -88,9 +88,11 @@ function GetWindArrow(data){
 function MakeBarButton(data){
   // console.log('data', data)
   return data.data.obsData.obsData.map((curr, i) => {
-    var temp =  Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32)
+    // console.log('curr', curr)
+    // var temp =  Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32)
+    var temp = curr.obs.air_temp_value_1 ? Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32) : ''
     var curStn = curr.wimsId
-    var windDir = curr.obs.wind_cardinal_direction_value_1d.value
+    var windDir = curr.obs.wind_cardinal_direction_value_1d ? curr.obs.wind_cardinal_direction_value_1d.value : ''
     var windSpeed = (curr.obs.wind_speed_value_1) ? `${Math.round(curr.obs.wind_speed_value_1.value)} mph` : null
 
     // `string text ${expression} string text`

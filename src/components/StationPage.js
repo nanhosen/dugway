@@ -5,6 +5,7 @@ import Grid  from './Grid'
 import Chart from'./ChartTest'
 import ObsChart from'./ObsChart'
 import ObTest from'./ObTest'
+import HighChart from'./HighChartTest'
 
 export class StationPage extends Component {
 	constructor(props) {
@@ -51,8 +52,8 @@ export class StationPage extends Component {
             <div className="col-md-auto">
               <ObsChart />
             </div>
-            <div className="col col-lg-2">
-             
+            <div className="col-md-auto">
+             <HighChart />
             </div>
           </div>
         </div>

@@ -50,6 +50,7 @@ export default class ERCMap extends Component {
     const flickrStyle = feature => {
       var zone = 'fdra' + feature.get('Fire_Dange')
       var dataObj = this.props.data
+      // console.log(dataObj)
       if(dataObj[zone]){
         var dynamicColor = dataObj[zone]['layerColor']
         // console.log('dynamicColor', dynamicColor)

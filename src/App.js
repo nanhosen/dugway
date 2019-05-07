@@ -10,7 +10,7 @@ import Home from './components/Home'
 import Header from './components/Header'
 import WeatherBar from './components/WeatherBar'
 
-import { getArchive, makeReq, getLatest } from './actions'
+import { getArchive, makeReq, getLatest, getForecast } from './actions'
 
 const routes = [
 
@@ -54,6 +54,7 @@ class App extends Component {
 		this.props.getArchive()
 		this.props.makeReq()
 		this.props.getLatest()
+		this.props.getForecast()
 		// console.log(this, 'thisapp')
 		// dispatch(makeReq())
 	}
@@ -81,4 +82,4 @@ const mapStateToProps = reduxState => {
 
 
 
-export default connect(mapStateToProps, { getArchive, makeReq, getLatest } )(App)
+export default connect(mapStateToProps, { getArchive, makeReq, getLatest, getForecast } )(App)
