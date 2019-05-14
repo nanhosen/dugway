@@ -9,34 +9,73 @@ class HeatMap extends Component {
     super(props)
   }
   render() {
-    console.log('chart this', this)
+    // console.log('chart this', this)
     var stn = this.props.stn
     var allData = this.props.archiveData
-    console.log('other name', allData)
-    if(allData){
+    // console.log('other name', allData)
+    var dataLength = Object.keys(this.props.archiveData).length
+    if(dataLength !== 0){
+
+      if(this.props.divWidth){
+        // var autosize = false
+        var width = this.props.divWidth
+      }
+      else{
+        console.log(this.props)
+        // var autosize = true
+        var width = 'auto'
+      }
+
+      var layout = {
+          title: 'SFWPI by Year',
+          annotations: [],
+          showscale: true,
+          legend: {
+            bgcolor: 'white'
+          },
+          width: width,
+          xaxis: {
+            ticks: '',
+            side: 'bottom',
+            tickmode: 'auto',
+            nticks: 10
+          },
+          yaxis: {
+            ticks: '',
+            ticksuffix: ' ',
+            tickmode: 'auto',
+            nticks: 5,
+            // width: 700,
+            name: 'year',
+            // height: 700,
+            // type: 'scaled',
+            autosize: true
+          }
+        }
+
       Date.prototype.addDays = function(days) {
         var date = new Date(this.valueOf());
         date.setDate(date.getDate() + days);
         return date;
-    }
-      console.log(allData)
+      }
+      // console.log(allData)
       var dateArray = Object.keys(allData)
-      console.log(dateArray)
-      var allDays = [new Date("1/1")]
-      var anotherDateArray = ["January 1"]
+      // console.log(dateArray)
+      // var allDays = [new Date("1/1")]
+      var dateArrayNoYear = ["January 1"]
       var d = 0
       var d0 = new Date("1/1/2018")
       while (d<365){
-        var pos = allDays.length - 1
-        var initDate = new Date(allDays[pos])
+        var pos = dateArrayNoYear.length - 1
+        var initDate = new Date(dateArrayNoYear[pos])
         var nextDate = initDate.addDays(1)
-        allDays.push(nextDate)
-        anotherDateArray.push(new Date(nextDate).toLocaleString('en-En',{month: "long", day: "numeric"})) 
+        // allDays.push(nextDate)
+        dateArrayNoYear.push(new Date(nextDate).toLocaleString('en-En',{month: "long", day: "numeric"})) 
 
 
         d = d+1
       }
-      console.log(anotherDateArray, allDays)
+      // console.log(dateArrayNoYear)
       var dateAr = []
       var yearAr = []
       var monDayAr = []
@@ -44,8 +83,10 @@ class HeatMap extends Component {
       var zAr = [[],[]]
       var bigZ = [[],[],[]]
 
+
+
       const data = [{
-        x: anotherDateArray,
+        x: dateArrayNoYear,
         y: yearAr,
         z: bigZ,
         showscale: true,
@@ -73,17 +114,17 @@ class HeatMap extends Component {
         // colorscale: colorscaleValue,
         showscale: false
       }]; 
-      anotherDateArray.map(curr => {
+      dateArrayNoYear.map(curr => {
         bigZ[0].push(0)
         bigZ[1].push(0)
         bigZ[2].push(0) 
       })
-      console.log(bigZ)
+      // console.log(bigZ)
       dateArray.map((curr, i) => {
         // console.log(allData[curr], curr, stn)
-        // console.log('index of', anotherDateArray.indexOf(new Date(curr).toLocaleString('en-En',{month: "long", day: "numeric"})), new Date(curr))
+        // console.log('index of', dateArrayNoYear.indexOf(new Date(curr).toLocaleString('en-En',{month: "long", day: "numeric"})), new Date(curr))
         var date = new Date(curr)
-        var index = anotherDateArray.indexOf(new Date(curr).toLocaleString('en-En',{month: "long", day: "numeric"}))
+        var index = dateArrayNoYear.indexOf(new Date(curr).toLocaleString('en-En',{month: "long", day: "numeric"}))
         var upMonth = date.getMonth() + 1
         var newDate = upMonth + '-' + date.getDate()
         var formattedDate = new Intl.DateTimeFormat('en-US',{ 
@@ -101,7 +142,7 @@ class HeatMap extends Component {
           yearAr.push(currYear)
           // zAr[position] = []
           zAr[position].push(parseInt(allData[curr][stn]['swfpiFcst']))
-          console.log('includes', 'zar', zAr, 'position', position, 'length', yearLen, yearLen-1)
+          // console.log('includes', 'zar', zAr, 'position', position, 'length', yearLen, yearLen-1)
 
 
         }
@@ -110,6 +151,7 @@ class HeatMap extends Component {
           // zAr[position].push(parseInt(allData[curr][stn]['swfpiFcst']))
 
         }
+
         // return data
           // console.log('data', data, data[0]['x'][0], bigZ)
       // var sfwpiObj = {
@@ -169,31 +211,7 @@ class HeatMap extends Component {
       return (
       <Plot
         data = { data }
-        layout = {{
-          title: 'SFWPI by Year',
-          annotations: [],
-          showscale: true,
-          legend: {
-            bgcolor: 'white'
-          },
-          xaxis: {
-            ticks: '',
-            side: 'bottom',
-            tickmode: 'auto',
-            nticks: 10
-          },
-          yaxis: {
-            ticks: '',
-            ticksuffix: ' ',
-            tickmode: 'auto',
-            nticks: 5,
-            // width: 700,
-            name: 'year',
-            // height: 700,
-            // type: 'scaled',
-            autosize: true
-          }
-        }}
+        layout = { layout }
         // layout={ 
         //   {
         //     width: 700, 

@@ -48,7 +48,7 @@ export class ObTest extends Component {
   			// console.log('curr.name', curr.name)
   			if(curr.wimsId == station){
   				// console.log('matchy!')
-  				console.log(curr)
+  				// consoles.log(curr)
 	  			var name = curr.name
 	  			var temp = curr.obs.air_temp_value_1 ? Math.round((curr.obs.air_temp_value_1.value * 1.8) + 32) : ''
 	  			var windDir = curr.obs.wind_cardinal_direction_value_1d.value

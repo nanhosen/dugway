@@ -8,16 +8,25 @@ class Chart extends Component {
     super(props)
   }
   render() {
-    console.log('chart this', this)
+    // console.log('chart this', this)
     var stn = this.props.stn
-    var dataLength = Object.keys(this.props.archiveData)
-    if(dataLength == 0){
-      console.log('nodata!!!!!!!!!!!!!!!!!!!')
-    }
+    var dataLength = Object.keys(this.props.archiveData).length
     var allData = this.props.archiveData
-    console.log('other name', allData)
-    if(allData){
 
+
+    console.log(this)
+    // console.log('other name', allData)
+    if(dataLength!==0){
+      if(this.props.divWidth){
+        var autosize = false
+        var width = this.props.divWidth
+      }
+      else{
+        console.log(this.props)
+        var autosize = true
+        var width = 'auto'
+      }
+      console.log(autosize, width)
       var dateArray = Object.keys(allData)
 
       var selectorOptions = {
@@ -98,45 +107,51 @@ class Chart extends Component {
         biObj['y'].push(parseInt(allData[curr][stn]['bi']))
 
       })
-    }
-    var firstDate = sfwpiObj.x[0]
-    // console.log(biObj)
+    
+      var firstDate = sfwpiObj.x[0]
+      // console.log(biObj)
 
-    var chartData = [sfwpiObj, biObj, ercObj]
-    return (
-      <Plot
-        data = { chartData }
-        layout={ 
-          {
-            width: 700, 
-            height: 500, 
-            title: `ERC, BI, and SFWPI for station ${stn}`,
-            yaxis: {
-              title: 'SFWPI',
-              range: [0,5]
-            },
-            yaxis2: {
-              title: 'BI',
-              titlefont: {color: 'rgb(148, 103, 189)'},
-              tickfont: {color: 'rgb(148, 103, 189)'},
-              overlaying: 'y',
-              side: 'right'
-            },
-            xaxis: {
-              type: 'date',
-              ticks: 'outside',
-              tick0: firstDate,
-              dtick: 1296000000,
-              ticklen: 2,
-              tickwidth: 1,
-              tickcolor: '#000',
-              rangeselector: selectorOptions,
-              rangeslider: {}
-            },
-          } 
-        }
-      />
-    )
+      var chartData = [sfwpiObj, biObj, ercObj]
+      var layout = 
+        {
+          autosize: autosize,
+          width: width, 
+          // height: 500, 
+          title: `ERC, BI, and SFWPI for station ${stn}`,
+          yaxis: {
+            title: 'SFWPI',
+            range: [0,5]
+          },
+          yaxis2: {
+            title: 'BI',
+            titlefont: {color: 'rgb(148, 103, 189)'},
+            tickfont: {color: 'rgb(148, 103, 189)'},
+            overlaying: 'y',
+            side: 'right'
+          },
+          xaxis: {
+            type: 'date',
+            ticks: 'outside',
+            tick0: firstDate,
+            dtick: 1296000000,
+            ticklen: 2,
+            tickwidth: 1,
+            tickcolor: '#000',
+            rangeselector: selectorOptions,
+            rangeslider: {}
+          }
+        } 
+      return (
+        <Plot
+          data = { chartData }
+          layout={ layout }
+        />
+      )
+    }
+    else{
+      // console.log('wait......')
+      return <div>Loading</div>
+    }  
   }
 }
 
