@@ -191,12 +191,46 @@ export function makeReq() {
 }
 
 
-export function getArchive(months) {
-  const payload = archiveData
-  // console.log('archiveData payload', payload)
-  return {
-    type: ARCHIVE_DATA,
-    payload
+// export function getArchive(months) {
+//   const payload = archiveData
+//   // console.log('archiveData payload', payload)
+//   return {
+//     type: ARCHIVE_DATA,
+//     payload
+//   }
+// }
+
+// export function getArchive() {
+//   return function(dispatch){
+//     axios.get('https://www.ercserver.us/dugwayArchive')
+//     .then((response)=>{
+//       // console.log('archiveresponse', response.data)
+//       // console.log('archivedata', response.data)
+//       const payload = response.data
+//       console.log('archiveData payload', payload)
+//       dispatch({ type: ARCHIVE_DATA, payload })
+//     })
+//     .catch(function(err){
+//       console.log(err.message)
+//     })
+//   }
+// }
+
+export function getArchive(){
+  // console.log('getForecast')
+  return function(dispatch){
+    axios.get('https://www.ercserver.us/dugwayArchive')
+    .then((response)=>{
+      const payload = response.data
+      // console.log(response)
+      
+      // console.log(payload, 'payload')
+      dispatch({ type: ARCHIVE_DATA, payload })
+
+     })
+    .catch(function(err){
+      console.log(err.message)
+    })
   }
 }
 

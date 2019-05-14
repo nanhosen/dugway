@@ -32,7 +32,7 @@ export class StationPage extends Component {
   	else{
     var stnSelected = this.props.match.path.slice(1)
   		// console.log('dataaa data', this)
-      var stnArray = Object.keys(this.props.archiveData[Object.keys(this.props.archiveData)[0]])
+      // var stnArray = Object.keys(this.props.archiveData[Object.keys(this.props.archiveData)[0]])
       // console.log('stnArray', stnArray)
 			return (
 				<div className="container">
@@ -74,15 +74,15 @@ export class StationPage extends Component {
   	
 	}	
 }
-function MakeChart(data){
-  // console.log('stnArray', data.stnArray)
-  return data.stnArray.map((curr,i) => {
-    return <div key={i} className="col"> 
-              <Chart stn={curr} />
-            </div>  
+// function MakeChart(data){
+//   // console.log('stnArray', data.stnArray)
+//   return data.stnArray.map((curr,i) => {
+//     return <div key={i} className="col"> 
+//               <Chart stn={curr} />
+//             </div>  
 
-  })
-}
+//   })
+// }
 // export default connect(reduxState => reduxState, { makeReq })(Home)
 
 const mapStateToProps = reduxState => {

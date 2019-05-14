@@ -10,6 +10,10 @@ class Chart extends Component {
   render() {
     console.log('chart this', this)
     var stn = this.props.stn
+    var dataLength = Object.keys(this.props.archiveData)
+    if(dataLength == 0){
+      console.log('nodata!!!!!!!!!!!!!!!!!!!')
+    }
     var allData = this.props.archiveData
     console.log('other name', allData)
     if(allData){
@@ -40,7 +44,7 @@ class Chart extends Component {
         }, {
             step: 'all',
         }],
-    };
+      };
       var sfwpiObj = {
         x:[],
         y:[],
@@ -108,7 +112,7 @@ class Chart extends Component {
             height: 500, 
             title: `ERC, BI, and SFWPI for station ${stn}`,
             yaxis: {
-              title: 'Jolly Index',
+              title: 'SFWPI',
               range: [0,5]
             },
             yaxis2: {
