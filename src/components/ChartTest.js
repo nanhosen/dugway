@@ -14,7 +14,7 @@ class Chart extends Component {
     var allData = this.props.archiveData
 
 
-    console.log(this)
+    // console.log(this)
     // console.log('other name', allData)
     if(dataLength!==0){
       if(this.props.divWidth){
@@ -22,11 +22,11 @@ class Chart extends Component {
         var width = this.props.divWidth
       }
       else{
-        console.log(this.props)
+        // console.log(this.props)
         var autosize = true
         var width = 'auto'
       }
-      console.log(autosize, width)
+      // console.log(autosize, width)
       var dateArray = Object.keys(allData)
 
       var selectorOptions = {
@@ -88,7 +88,7 @@ class Chart extends Component {
         }
       }
       dateArray.map((curr, i) => {
-        // console.log(allData[curr], curr, stn)
+        // console.log(allData[curr][stn], curr, stn)
         var date = new Date(curr)
         var upMonth = date.getMonth() + 1
         var newDate = date.getFullYear() + '-' + upMonth + '-' + date.getDate()
@@ -101,10 +101,13 @@ class Chart extends Component {
         sfwpiObj['x'].push(newDate)
         ercObj['x'].push(newDate)
         biObj['x'].push(newDate)
-        sfwpiObj['marker']['color'].push(getBarColor(allData[curr][stn]['swfpiFcst']))
-        sfwpiObj['y'].push(parseInt(allData[curr][stn]['swfpiFcst']))
-        ercObj['y'].push(parseInt(allData[curr][stn]['erc']))
-        biObj['y'].push(parseInt(allData[curr][stn]['bi']))
+        var sfwpiFcst = allData[curr][stn] ? allData[curr][stn]['swfpiFcst'] : 0
+        var erc = allData[curr][stn] ? allData[curr][stn]['erc'] : 0
+        var bi = allData[curr][stn] ? allData[curr][stn]['bi'] : 0
+        sfwpiObj['marker']['color'].push(getBarColor(sfwpiFcst))
+        sfwpiObj['y'].push(parseInt(sfwpiFcst))
+        ercObj['y'].push(parseInt(erc))
+        biObj['y'].push(parseInt(bi))
 
       })
     

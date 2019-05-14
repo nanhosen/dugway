@@ -152,7 +152,7 @@ export default class ERCMap extends Component {
       target: document.getElementById('map'),
       view: new View({
         center: [-12611222.999392, 4895944.535722],
-        zoom: 8.5,
+        zoom: 9,
       })
     })
     // console.log('this ercmap mount', this.props)

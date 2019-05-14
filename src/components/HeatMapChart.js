@@ -21,7 +21,7 @@ class HeatMap extends Component {
         var width = this.props.divWidth
       }
       else{
-        console.log(this.props)
+        // console.log(this.props)
         // var autosize = true
         var width = 'auto'
       }
@@ -137,7 +137,8 @@ class HeatMap extends Component {
         var position = yearLen-1 >0 ? yearLen-1 : 0
         // console.log(yearAr)
         dateAr.push(newDate)
-        bigZ[position][index] = parseInt(allData[curr][stn]['swfpiFcst'])
+        var sfwpiFcst = allData[curr][stn] ? allData[curr][stn]['swfpiFcst'] : 0
+        bigZ[position][index] = parseInt(sfwpiFcst)
         if(!yearAr.includes(currYear)){
           yearAr.push(currYear)
           // zAr[position] = []
