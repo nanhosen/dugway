@@ -15,7 +15,7 @@ import Stamen from 'ol/source/Stamen'
 // import TileJSON from 'ol/source/TileJSON.js'
 import  VectorSource  from 'ol/source/Vector.js'
 // import { scaledSource, scaledLayer } from './layers/scaledLayer'
-import { Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
+import { Circle as CircleStyle, Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 import GeoJSON from 'ol/format/GeoJSON'
 // import Collection from 'ol/Collection'
 import fdaaLayer from '../layers/fdaaLayer.js'
@@ -29,7 +29,15 @@ const mapKey = 'pk.eyJ1IjoicnRpcHBldHRzIiwiYSI6ImNpb2huaWtuNDAwNnF1NW0xNWFhYXJiM
 
 
 export default class ERCMap extends Component {
-  state = { stateObj: 'first state' }
+  // state = { 
+  //   stateObj: 'first state',
+  //   mapColor: {
+  //     fdra1:'grey',
+  //     fdra2: 'grey',
+  //     fdra3: 'grey', 
+  //     fdra4: 'grey'
+  //   },
+  //  }
 
   handleResizedScreen = () => setTimeout(() => {
     this._map.getView().fit([ -13385849.855545742, 4164163.9360093023, -12120670.513975333, 5733155.322681262 ], (this._map.getSize()), {padding: [10, 20, 50, 20], constrainResolution: false})
@@ -46,20 +54,45 @@ export default class ERCMap extends Component {
        * @param {Object=} opt_options Control options.
        */
     
-    
+    var createTextStyle = function(feature, resolution) {
+      return new Text({
+        textAlign: 'end',
+        text: resolution < 2000 ? feature.get('name') : '',
+        stroke: new Stroke({color: 'white', width: 2}),
+        offsetX: 8
+      });
+    };
+
+    var rawsStyleFunction = function(feature,resolution){
+      var style = new Style({
+            image: new CircleStyle({
+                radius: 3,
+                fill: new Fill({
+                  color: 'white'
+                }),
+                stroke: new Stroke({
+                  color: 'black'
+                })
+              }),
+            text: createTextStyle(feature,resolution)
+          })
+      return style
+    }
     const flickrStyle = feature => {
       var zone = 'fdra' + feature.get('Fire_Dange')
       var dataObj = this.props.data
-      // console.log(dataObj)
+      // console.log(this.state.mapColor)
       if(dataObj[zone]){
         var dynamicColor = dataObj[zone]['layerColor']
-        // console.log('dynamicColor', dynamicColor)
+        console.log('dynamicColor', dynamicColor)
       }
       else{
-        // console.log('no data', zone)
+      console.log(dataObj)
+        console.log('no data', zone)
         var dynamicColor = 'grey'
       }
-      // console.log('zone', zone)
+      // var stateColor = this.state.mapColor[zone]
+      // console.log('stateColor', stateColor, 'zone', zone, 'thistatemapcolor',  this.state.mapColor,'thistate', this.state)
       // console.log('flickrStyle this', this)
       var style = new  Style({
         stroke: new Stroke({
@@ -79,6 +112,7 @@ export default class ERCMap extends Component {
 
         })
       })
+      console.log(style)
       return [style];
     }
 
@@ -97,11 +131,23 @@ export default class ERCMap extends Component {
         new VectorLayer({
             renderMode: 'image',
             source: new VectorSource({
-              url: './FDAAs4326.json', 
+              url: './FDAAs_WGS84.json', 
               format: new GeoJSON()
             }),
             style: flickrStyle
-          })
+          }),
+        new VectorLayer({
+          source: new VectorSource({
+            url: './raws.json', 
+            format: new GeoJSON()
+          }), 
+          wrapX: false,
+          minResolution: 0,
+          maxResolution: 2000,
+          visible: true,
+          style: rawsStyleFunction
+        })
+
       ],
       target: document.getElementById('map'),
       view: new View({
@@ -114,15 +160,32 @@ export default class ERCMap extends Component {
     // this._map.getView().fit([ -13385849.855545742, 4164163.9360093023, -12120670.513975333, 5733155.322681262 ], (this._map.getSize()), {padding: [10, 20, 50, 20], constrainResolution: false})
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps !== this.props){
+    if (prevProps.data !== this.props.data){
+      // if(dataObj[zone]){
+      //   console.log(dataObj[zone]['layerColor'])
+      // }
     //   this.setState({ stateObj: this.props.stateObj })
-    //   // this.setState({ stateObj: 'newstate' })
-      // console.log('dont match', this.props, prevProps)
+      // if(this.props.data){
+      //   var fdraAr = Object.keys(this.props.data)
+      //   console.log(fdraAr)
+      //   var colorObj = this.state.mapColor
+      //   fdraAr.map(curr => {
+      //     console.log('curr', curr)
+      //     console.log(this.state.mapColor[curr], this.props.data[curr]['layerColor'])
+      //     colorObj[curr] = this.props.data[curr]['layerColor']
+
+      //   })
+      //   console.log(colorObj)
+      //   this.setState({mapColor: colorObj})
+      // }
+      // // this.setState({ stateObj: 'newstate', mapColor: 'green' })
+      // console.log('dont match', this.props.data, prevProps.data, this.state)
     }
     // console.log('component did mout', this)
   }
   // componentWillUnmount = () => window.removeEventListener("resize", this.handleResizedScreen)
   render = () => {
+    console.log('render', this)
     return <div className='card h-100 border-0' id="map"></div>
   }
 

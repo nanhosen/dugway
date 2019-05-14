@@ -1,0 +1,37 @@
+{
+	"type": "FeatureCollection",
+	"features": [{
+		"type": "Feature",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-113.0323, 40.3873]
+		},
+		"properties": {
+			"name": "Dugway North",
+			"id": 420913,
+			"mwestId" : "TT390"
+		}
+	}, {
+		"type": "Feature",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-112.8908, 40.1637]
+		},
+		"properties": {
+			"name": "Dugway South",
+			"id": 420916,
+			"mwestId": "TT391"
+		}
+	}, {
+		"type": "Feature",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-113.1111, 40.1156	]
+		},
+		"properties": {
+			"name": "Dugway West",
+			"id": 420917,
+			"mwestId": "TT392"
+		}
+	}]
+}

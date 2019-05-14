@@ -15,7 +15,7 @@ class Chart extends Component {
     if(allData){
 
       var dateArray = Object.keys(allData)
-      var jolIndObj = {
+      var sfwpiObj = {
         x:[],
         y:[],
         type: 'bar', 
@@ -49,7 +49,7 @@ class Chart extends Component {
         }
       }
       dateArray.map((curr, i) => {
-        console.log(allData[curr], curr, stn)
+        // console.log(allData[curr], curr, stn)
         var date = new Date(curr)
         var upMonth = date.getMonth() + 1
         var newDate = date.getFullYear() + '-' + upMonth + '-' + date.getDate()
@@ -59,20 +59,20 @@ class Chart extends Component {
           day: 'numeric' 
         }).format(date)
         // console.log(formattedDate,'new',  newDate)
-        jolIndObj['x'].push(newDate)
+        sfwpiObj['x'].push(newDate)
         ercObj['x'].push(newDate)
         biObj['x'].push(newDate)
-        jolIndObj['marker']['color'].push(getBarColor(allData[curr][stn]['jolInd']))
-        jolIndObj['y'].push(parseInt(allData[curr][stn]['jolInd']))
+        sfwpiObj['marker']['color'].push(getBarColor(allData[curr][stn]['swfpiFcst']))
+        sfwpiObj['y'].push(parseInt(allData[curr][stn]['swfpiFcst']))
         ercObj['y'].push(parseInt(allData[curr][stn]['erc']))
         biObj['y'].push(parseInt(allData[curr][stn]['bi']))
 
       })
     }
-    var firstDate = jolIndObj.x[0]
+    var firstDate = sfwpiObj.x[0]
     // console.log(biObj)
 
-    var chartData = [jolIndObj, biObj, ercObj]
+    var chartData = [sfwpiObj, biObj, ercObj]
     return (
       <Plot
         data = { chartData }

@@ -22,15 +22,15 @@ export class Home extends Component {
   	// console.log('updated this', this)
   }
   render = () => {
-  	if(!this.props.forecastData){
-  		// console.log('noooo data', this)
+  	if(Object.keys(this.props.forecastData).length == 0){
+  		console.log('noooo data', this)
   		return(
   			<div>Loading</div>
   		)
   	}
   	else{
-  		console.log('dataaa Home', this)
       var fdraArray = Object.keys(this.props.forecastData)
+  		console.log('dataaa Home',fdraArray.length, this)
       var obDate = [] 
       var date
       fdraArray.map( currFdra => 

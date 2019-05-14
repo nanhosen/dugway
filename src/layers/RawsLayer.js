@@ -8,7 +8,7 @@ import TileJSON from 'ol/source/TileJSON.js'
 import VectorSource from 'ol/source/Vector.js'
 import {Circle as CircleStyle, Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 import GeoJSON from 'ol/format/GeoJSON'
-import raws from '../../data/rawsLocations.json'
+import raws from '../../data/raws.json'
 
 var iconStyle = new Style({
   image: new CircleStyle({

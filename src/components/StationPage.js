@@ -6,6 +6,8 @@ import Chart from'./ChartTest'
 import ObsChart from'./ObsChart'
 import ObTest from'./ObTest'
 import HighChart from'./HighChartTest'
+import Slider from './SliderBar'
+import HeatMapChart from './HeatMapChart'
 
 export class StationPage extends Component {
 	constructor(props) {
@@ -36,6 +38,11 @@ export class StationPage extends Component {
 				<div className="container">
           <div className="row">
             <div className="col-md-auto">
+              <Slider />
+            </div>
+          </div>  
+          <div className="row">
+            <div className="col-md-auto">
               <ObTest stn = { stnSelected }/>
             </div>
             <div className="col-md-auto">
@@ -54,6 +61,11 @@ export class StationPage extends Component {
             </div>
             <div className="col-md-auto">
              <HighChart />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-auto">
+              <HeatMapChart stn={ stnSelected } />
             </div>
           </div>
         </div>
