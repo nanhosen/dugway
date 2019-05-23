@@ -49,15 +49,15 @@ export function getForecast(){
           indexPercentile: null,
           forecastDate: null,
           prettyName: 'FDRA 3'
-        },
-        fdra4: {
-          stations: [420917],
-          // stations: [260117],
-          fcstSwfpi: null,
-          indexPercentile: null,
-          forecastDate: null,
-          prettyName: 'FDRA 4'
         }
+        // fdra4: {
+        //   stations: [420917],
+        //   // stations: [260117],
+        //   fcstSwfpi: null,
+        //   indexPercentile: null,
+        //   forecastDate: null,
+        //   prettyName: 'FDRA 4'
+        // }
       }
       var fdraArray = Object.keys(fdraInfo)
       fdraArray.map(currFdra=>{
@@ -130,15 +130,15 @@ export function makeReq() {
           fcstSwfpi: null,
           avgJolIndex: null,
           prettyName: 'FDRA 3'
-        },
-        fdra4: {
-          stations: [420917],
-          // stations: [260117],
-          jolValAr: [],
-          fcstSwfpi: null,
-          avgJolIndex: null,
-          prettyName: 'FDRA 4'
         }
+        // fdra4: {
+        //   stations: [420917],
+        //   // stations: [260117],
+        //   jolValAr: [],
+        //   fcstSwfpi: null,
+        //   avgJolIndex: null,
+        //   prettyName: 'FDRA 4'
+        // }
       }
 
       var fdraArray = Object.keys(fdraInfo)

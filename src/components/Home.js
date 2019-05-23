@@ -51,6 +51,24 @@ export class Home extends Component {
 			      	<div className="card h-100"> 
 		          	<ERCMap data = {this.props.forecastData}/>
                 <footer className="text-center"><b>Fire Danger Forecast for {date}</b></footer>
+                <footer className="text-center">
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-sm" style={{backgroundColor: "rgba(40,167,69,0.6)"}}> 
+                        Low
+                      </div>
+                      <div className="col-sm" style={{backgroundColor: "rgba(255, 236, 7, 0.6)"}}>
+                        Moderate
+                      </div>
+                      <div className="col-sm" style={{backgroundColor: "rgba(220,53,69,0.8)"}}>
+                        High
+                      </div>
+                      <div className="col-sm" style={{backgroundColor: "#d861a1"}}>
+                        Extreme
+                      </div>
+                    </div>
+                  </div>
+                </footer>
 		    		 	</div>
 		   			</div> 
 		   			<div className="col-12 col-md-8 mt-4 mb-2">

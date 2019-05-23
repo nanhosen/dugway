@@ -8,6 +8,7 @@ import ObTest from'./ObTest'
 import HighChart from'./HighChartTest'
 import Slider from './SliderBar'
 import HeatMapChart from './HeatMapChart'
+import Forecast1 from './Forecast1'
 
 export class StationPage extends Component {
 	constructor(props) {
@@ -59,18 +60,21 @@ export class StationPage extends Component {
       // console.log('stnArray', stnArray)
       var divWidth = this.chartRef.current ? this.chartRef.current.offsetWidth : null
       var divWidthHeat = this.heatMapRef.current ? this.heatMapRef.current.offsetWidth : null
-      console.log('divWidth', divWidth)
+      // console.log('divWidth', divWidth)
 			return (
 				<div className="container">
           <div className="row">
-            <div className="col-md-auto">
+            
               <Slider />
-            </div>
-          </div>  
+            
+          </div> 
           <div className="row">
-            <div className="col-md-auto">
-              <ObTest stn = { stnSelected }/>
-            </div>
+            
+              <Forecast1 />
+            
+          </div> 
+          <div className="row">
+
           </div>
           <div className="row" ref = {this.chartRef}>
             <div className="col-md-auto" >
@@ -115,3 +119,7 @@ const mapStateToProps = reduxState => {
 }
 export default connect(mapStateToProps)(StationPage)
 // export default connect(mapStateToProps, { makeReq })( Home )
+
+//            <div className="col-md-auto">
+            //   <ObTest stn = { stnSelected }/>
+            // </div>

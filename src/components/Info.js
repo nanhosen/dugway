@@ -7,6 +7,7 @@ class Info extends Component {
 
  
   render() {
+    console.log(this.props)
     return (
       <div className="card border-0" style={{height: '500px'}}>
         <div className="row no-gutters">
