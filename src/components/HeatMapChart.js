@@ -112,7 +112,6 @@ class HeatMap extends Component {
         ],
         type: 'heatmap',
         // colorscale: colorscaleValue,
-        showscale: false
       }]; 
       dateArrayNoYear.map(curr => {
         bigZ[0].push(0)
@@ -209,7 +208,7 @@ class HeatMap extends Component {
         // biObj['y'].push(parseInt(allData[curr][stn]['bi']))
       })
         console.log('heatmapdata', data)
-      
+
       return (
       <Plot
         data = { data }

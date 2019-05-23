@@ -86,15 +86,9 @@ export class StationPage extends Component {
             <div className="col-md-auto">
               <HeatMapChart stn={ stnSelected } divWidth = { divWidthHeat }/>
             </div>
-            <div className="col-md-auto">
-             <HighChart />
-            </div>
+            
           </div>
-          <div className="row">
-            <div className="col-md-auto">
-              <ObsChart />
-            </div>
-          </div>
+          
         </div>
 			)
   	}

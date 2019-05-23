@@ -50,7 +50,7 @@ export class WeatherBar extends Component {
   		// var arrow = GetWindArrow(windDir)
   		// console.log(temp,'temp', windDir)
 			return (
-				<nav className="navbar navbar-expand-lg navbar-light bg-light">
+				<nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor:'#a6aab5'}}>
           <MakeBarButton data = {this.props}/>
 				</nav>
 			)

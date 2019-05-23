@@ -285,6 +285,9 @@ export function getLatest(){
   }
 }
 
+export function getNwsForecast(){
+  //https://api.weather.gov/gridpoints/SLC/58,163/forecast
+}
 
 
 // export function fdaaLayer(fdraData) {
