@@ -206,9 +206,8 @@ class HeatMap extends Component {
         // sfwpiObj['y'].push(parseInt(allData[curr][stn]['swfpiFcst']))
         // ercObj['y'].push(parseInt(allData[curr][stn]['erc']))
         // biObj['y'].push(parseInt(allData[curr][stn]['bi']))
-      })
-        console.log('heatmapdata', data)
 
+      })
       return (
       <Plot
         data = { data }

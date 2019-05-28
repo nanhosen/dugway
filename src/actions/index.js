@@ -5,7 +5,7 @@ import VectorSource from 'ol/source/Vector.js'
 import { Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 import GeoJSON from 'ol/format/GeoJSON'
 
-import { WIMS_DATA, ARCHIVE_DATA, OBS_DATA, FORECAST_DATA } from './types'
+import { WIMS_DATA, ARCHIVE_DATA, OBS_DATA, FORECAST_DATA, NWS_FCST } from './types'
 import { FETCH_DATA } from './types'
 
 import { getText } from '../components/things/getText'
@@ -286,7 +286,80 @@ export function getLatest(){
 }
 
 export function getNwsForecast(){
-  //https://api.weather.gov/gridpoints/SLC/58,163/forecast
+  //
+  return function(dispatch){
+    axios.get('https://api.weather.gov/gridpoints/SLC/58,163/forecast')
+    .then((response)=>{
+      function getMaxWind(string){
+        var windArray = string.split(" ")
+        var mphLoc = windArray.indexOf("mph")
+        var maxSpeed = parseInt(windArray[mphLoc-1])
+        // console.log(windArray.indexOf("mph"), windArray, maxSpeed)
+        return maxSpeed
+      }
+      function getIconType(string){
+        var fcstArray = string.split(" ")
+        // var typeArray = ["Thunderstorms", "Rain", "Mostly" ]
+        // var type = 
+        //   {
+        //     Rain:"rain",
+        //     Mostly:"cloudy",
+        //     sunny: "sunny",
+        //     Thunderstorms: "thunderstorms"
+        //   }
+        //   console.log(fcstArray, fcstArray.indexOf("Thunderstorms"))
+        if(fcstArray.indexOf("Thunderstorms") >=0)  {
+          return "thunderstorms"
+        }
+        else if(fcstArray.indexOf("Rain") >=0)  {
+          return "rain"
+        }
+        else if(fcstArray.indexOf("Mostly") >=0)  {
+          return "cloudy"
+        }
+        else{
+          return "sunny"
+        }
+        // typeArray.map(curr => {
+        //   console.log('curr', curr)
+        //   if(fcstArray.indexOf(curr) == 0){
+        //     console.log(type[curr], curr, string)
+        //     return 
+        //   }
+        // })  
+
+      }
+      var speed = getMaxWind("7 to 16 mph")
+      // console.log('speed', speed)
+      var forecast = response.data.properties
+      var payload = []
+      // var wantPeriods = [0, 2, 4, 6, 8, 10]
+      forecast.periods.map((curr,i) => {
+        // var currFcst = forecast.periods[curr]
+        // console.log(i)
+        // getIconType("sunny") 
+        if(curr.isDaytime){
+          // console.log('day', i, forecast.periods[i+1])
+          // getIconType(curr.shortForecast)
+
+          var fcstOb = {
+            name: curr.name,
+            maxT: curr.temperature,
+            minT: forecast.periods[i+1].temperature,
+            windDirection: curr.windDirection,
+            windSpeed: getMaxWind(curr.windSpeed),
+            shortForecast: curr.shortForecast,
+            iconType: getIconType(curr.shortForecast)
+          }
+        payload.push(fcstOb)
+        }
+      })
+      // var payload = 'forecast test'
+      console.log('nwsresp', forecast)
+      console.log('payloadNWS', payload)
+      dispatch ({ type: NWS_FCST, payload})
+    })
+  }
 }
 
 

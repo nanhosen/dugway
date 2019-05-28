@@ -23,14 +23,14 @@ export class Home extends Component {
   }
   render = () => {
   	if(Object.keys(this.props.forecastData).length == 0){
-  		console.log('noooo data', this)
+  		// console.log('noooo data', this)
   		return(
   			<div>Loading</div>
   		)
   	}
   	else{
       var fdraArray = Object.keys(this.props.forecastData)
-  		console.log('dataaa Home',fdraArray.length, this)
+  		// console.log('dataaa Home',fdraArray.length, this)
       var obDate = [] 
       var date
       fdraArray.map( currFdra => 
@@ -43,7 +43,7 @@ export class Home extends Component {
         }
       )
       
-      console.log('obDadte', date)  
+      // console.log('obDadte', date)  
 			return (
 				<div>
 					<div className="row mx-2 h-100" >
