@@ -2,8 +2,10 @@ import React, { Component }  from 'react';
 import Plot from 'react-plotly.js';
 import { connect } from 'react-redux'
 
+import avgErcBi from '../data/avgErcBi'
 
-class Chart extends Component {
+
+class ErcChart extends Component {
   constructor(props) {
     super(props)
   }
@@ -11,15 +13,18 @@ class Chart extends Component {
     // console.log('chart this', this)
     var stn = this.props.stn
     var dataLength = Object.keys(this.props.archiveData).length
+    var dataLengthAvg = Object.keys(this.props.avgData).length
     var allData = this.props.archiveData
+    var avgData = this.props.avgData
 
 
     // console.log(this)
     // console.log('other name', allData)
-    if(dataLength!==0){
+    if(dataLength!==0 && dataLengthAvg !==0){
       if(this.props.divWidth){
         var autosize = false
         var width = this.props.divWidth
+        // console.log(Object.keys(avgData))
       }
       else{
         // console.log(this.props)
@@ -28,6 +33,23 @@ class Chart extends Component {
       }
       // console.log(autosize, width)
       var dateArray = Object.keys(allData)
+      var dateArrayAvg = Object.keys(avgData)
+      var avgErcY = []
+      var avgBiY = []
+
+      var avgXDates = dateArrayAvg.reduce((prev,curr, i) => {
+        var date = new Date(curr)
+        var upMonth = date.getMonth() + 1
+        var newDate = date.getFullYear() + '-' + upMonth + '-' + date.getDate()
+        console.log(newDate, i, prev)
+        prev.push(newDate)
+        avgErcY.push(avgData[curr][stn]['avgBi'])
+        avgBiY.push(avgData[curr][stn]['avgErc'])
+        console.log(avgData[curr][stn]['avgErc'])
+        return prev
+        // console.log(curr, newDate)
+      },[])
+      console.log(avgXDates)
 
       var selectorOptions = {
         buttons: [{
@@ -81,9 +103,22 @@ class Chart extends Component {
         }
       }
 
+      var ercAvgObj = {
+        x:avgXDates,
+        y:avgErcY,
+        yaxis: 'y2',
+        type: 'scatter', 
+        name: 'Average ERC (2010-2018)',
+        line: {
+          color: 'grey',
+          width: 2,
+          dash: 'dot'
+        }
+      }
+
       var biObj = {
         x:[],
-        y:[],
+        y: avgBiY,
         yaxis: 'y2',
         type: 'scatter', 
         name: 'BI',
@@ -93,49 +128,76 @@ class Chart extends Component {
           dash: 'dot'
         }
       }
+
+      var biAvgObj = {
+        x:[],
+        y:[],
+        yaxis: 'y2',
+        type: 'scatter', 
+        name: 'BI',
+        line: {
+          color: 'grey',
+          width: 2,
+          dash: 'dot'
+        }
+      }
+
+      console.log('avgdate', dateArrayAvg)
+
+      
       dateArray.map((curr, i) => {
         // console.log(allData[curr][stn], curr, stn)
         var date = new Date(curr)
         var upMonth = date.getMonth() + 1
         var newDate = date.getFullYear() + '-' + upMonth + '-' + date.getDate()
-        var formattedDate = new Intl.DateTimeFormat('en-US',{ 
-          year: '2-digit', 
-          month: 'numeric', 
-          day: 'numeric' 
-        }).format(date)
+        // var formattedDate = new Intl.DateTimeFormat('en-US',{ 
+        //   year: '2-digit', 
+        //   month: 'numeric', 
+        //   day: 'numeric' 
+        // }).format(date)
         // console.log(formattedDate,'new',  newDate)
         sfwpiObj['x'].push(newDate)
         ercObj['x'].push(newDate)
         biObj['x'].push(newDate)
+        biAvgObj['x'].push(newDate)
+        ercAvgObj['x'].push(newDate)
         var sfwpiFcst = allData[curr][stn] ? allData[curr][stn]['swfpiFcst'] : 0
         var erc = allData[curr][stn] ? allData[curr][stn]['erc'] : 0
         var bi = allData[curr][stn] ? allData[curr][stn]['bi'] : 0
+        // console.log(avgData[curr][stn]['avgBi'])
         sfwpiObj['marker']['color'].push(getBarColor(sfwpiFcst))
         sfwpiObj['y'].push(parseInt(sfwpiFcst))
         ercObj['y'].push(parseInt(erc))
         biObj['y'].push(parseInt(bi))
+        
 
       })
+      console.log('ercAvgObj  ', ercAvgObj['y'])
     
       var firstDate = sfwpiObj.x[0]
       var xLen = sfwpiObj.x.length
       var lastDate = sfwpiObj.x[xLen - 1]
-      console.log(lastDate, biObj)
+      // console.log(lastDate, biObj)
 
-      var chartData = [biObj, ercObj]
+      var chartData = [ercAvgObj, ercObj]
+      // console.log(chartData)
       // var chartData = [sfwpiObj, biObj, ercObj]
       var layout = 
         {
+          legend: {
+            x: 0,
+            y: 1
+          },
           autosize: autosize,
           width: width, 
           // height: 500, 
-          title: `ERC, BI, and SFWPI for station ${stn}`,
+          title: `ERC for station ${stn}`,
           yaxis: {
-            title: 'SFWPI',
+            title: 'ERC',
             range: [0,5]
           },
           yaxis2: {
-            title: 'BI',
+            title: 'Avg',
             titlefont: {color: 'rgb(148, 103, 189)'},
             tickfont: {color: 'rgb(148, 103, 189)'},
             overlaying: 'y',
@@ -146,7 +208,7 @@ class Chart extends Component {
             ticks: 'outside',
             tick0: firstDate,
             dtick: 1296000000,
-            range: ["2019-5-4", lastDate],
+            range: ["2019-01-01", lastDate],
             ticklen: 2,
             tickwidth: 1,
             tickcolor: '#000',
@@ -184,4 +246,4 @@ const mapStateToProps = reduxState => {
   // console.log('this home state', state)
   return state
 }
-export default connect(mapStateToProps)(Chart)
+export default connect(mapStateToProps)(ErcChart)

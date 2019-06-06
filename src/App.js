@@ -10,7 +10,9 @@ import Home from './components/Home'
 import Header from './components/Header'
 import WeatherBar from './components/WeatherBar'
 
-import { getArchive, makeReq, getLatest, getForecast, getNwsForecast } from './actions'
+import avgErcBi from './data/avgErcBi'
+
+import { getArchive, makeReq, getLatest, getForecast, getNwsForecast, assignAvgAllYears } from './actions'
 
 const routes = [
 
@@ -56,8 +58,18 @@ class App extends Component {
 		this.props.getLatest()
 		this.props.getForecast()
 		this.props.getNwsForecast()
-		// console.log(this, 'thisapp')
+		if(this.props.archiveData){
+			console.log(this.props.archiveData)
+		}
+		console.log(this, 'thisapp')
 		// dispatch(makeReq())
+	}
+	componentDidUpdate(prevProps){
+		if(prevProps.archiveData !== this.props.archiveData){
+
+			this.props.assignAvgAllYears(this.props.archiveData, avgErcBi)
+			// console.log('app did update', this, prevProps)
+		}
 	}
   render() {
     return (
@@ -83,4 +95,4 @@ const mapStateToProps = reduxState => {
 
 
 
-export default connect(mapStateToProps, { getArchive, makeReq, getLatest, getForecast, getNwsForecast } )(App)
+export default connect(mapStateToProps, { getArchive, makeReq, getLatest, getForecast, getNwsForecast, assignAvgAllYears } )(App)

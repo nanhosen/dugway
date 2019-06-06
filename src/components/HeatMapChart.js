@@ -70,9 +70,11 @@ class HeatMap extends Component {
         var initDate = new Date(dateArrayNoYear[pos])
         var nextDate = initDate.addDays(1)
         // allDays.push(nextDate)
-        dateArrayNoYear.push(new Date(nextDate).toLocaleString('en-En',{month: "long", day: "numeric"})) 
-
-
+        var index = dateArrayNoYear.indexOf(new Date(nextDate).toLocaleString('en-En',{month: "long", day: "numeric"}))
+  // console.log(index)
+        if(index < 0){
+          dateArrayNoYear.push(new Date(nextDate).toLocaleString('en-En',{month: "long", day: "numeric"})) 
+        }
         d = d+1
       }
       // console.log(dateArrayNoYear)
@@ -118,7 +120,7 @@ class HeatMap extends Component {
         bigZ[1].push(0)
         bigZ[2].push(0) 
       })
-      // console.log(bigZ)
+      // console.log(JSON.stringify(dateArray))
       dateArray.map((curr, i) => {
         // console.log(allData[curr], curr, stn)
         // console.log('index of', dateArrayNoYear.indexOf(new Date(curr).toLocaleString('en-En',{month: "long", day: "numeric"})), new Date(curr))

@@ -5,7 +5,7 @@ import VectorSource from 'ol/source/Vector.js'
 import { Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 import GeoJSON from 'ol/format/GeoJSON'
 
-import { WIMS_DATA, ARCHIVE_DATA, OBS_DATA, FORECAST_DATA, NWS_FCST } from './types'
+import { WIMS_DATA, ARCHIVE_DATA, OBS_DATA, FORECAST_DATA, NWS_FCST, AVG_DATA } from './types'
 import { FETCH_DATA } from './types'
 
 import { getText } from '../components/things/getText'
@@ -359,6 +359,59 @@ export function getNwsForecast(){
       console.log('payloadNWS', payload)
       dispatch ({ type: NWS_FCST, payload})
     })
+  }
+}
+
+export function assignAvgAllYears(archiveData, avgData){
+  var nameMap = new Map([['dugwayN',420913],['dugwayS',420916],['dugwayW',420917]])
+  var archiveDateArray = Object.keys(archiveData)
+  // console.log(archiveDateArray)
+  var yearsArray = archiveDateArray.reduce((prev,curr)=>{
+    var year = new Date(curr).getFullYear()
+    if(prev.indexOf(year) < 0 ){
+      prev.push(year)
+    }
+    return prev
+  }, [])
+  var stnArray = Object.keys(avgData)
+  // console.log(stnArray)
+  var avgArray = []
+  var avgObj = {}
+  yearsArray.map(currYear => {
+    stnArray.map((currAvgStn) => {
+      // console.log(nameMap.get(currAvgStn))
+      avgData[currAvgStn].map(currData => {
+        var year = currYear.toString()
+        var fullDate = `${currData.date} ${year}`
+        var day = new Date(fullDate).toLocaleString('en-En',{day: "2-digit"})
+        var month = new Date(fullDate).toLocaleString('en-En',{month: "2-digit"})
+        var year = new Date(fullDate).toLocaleString('en-En',{year: "numeric"})
+        var formatDate = `${month}/${day}/${year}`
+        var avgBi= currData.avgBi
+        var avgErc= currData.avgErc
+        if(!avgObj[formatDate]){
+          // console.log('not', avgObj[formatDate])
+          avgObj[formatDate] = {}
+        }
+        // console.log(avgObj[formatDate])
+        avgObj[formatDate][nameMap.get(currAvgStn)] = {
+          name: currAvgStn,
+          avgBi,
+          avgErc
+        }
+        avgArray.push({
+          formatDate,
+          avgBi,
+          avgErc
+        })
+      // console.log(formatDate, currData, currAvgStn)
+      })
+    })
+  })
+  // console.log(avgObj, nameMap)
+  var payload = avgObj
+  return function(dispatch){
+    dispatch ({ type: AVG_DATA, payload})
   }
 }
 

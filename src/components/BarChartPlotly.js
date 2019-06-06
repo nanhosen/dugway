@@ -8,12 +8,19 @@ class BarChartPlotly extends Component {
   }
   render() {
   	
-  	if(this.props.props.current){
-  		console.log('thisBar', this.props.props.current.offsetWidth)
-  	}
+  	// if(this.props.props.current){
+  	// 	// console.log('thisBar', this.props.props.current.offsetWidth)
+  	// }
   	var dataLength = Object.keys(this.props.nwsForecast).length
 
-    if(dataLength!==0 && this.props.props.current){
+    // if(dataLength!==0 && this.props.props.current){
+    if(dataLength!==0){
+    	if(this.props.props){
+    		// console.log('im here!!!!!!!', this)
+    	}
+    	else{
+    		// console.log('not here', this, this.props.props)
+    	}
     	var x = []
     	var y = []
     	var text = []
@@ -24,7 +31,7 @@ class BarChartPlotly extends Component {
     			text.push(curr.windSpeed + ' mph')
     			return curr.windSpeed
     		}
-    	console.log('test', text)
+    	// console.log('test', text)
     	})
     	var data = [
     			{
@@ -40,8 +47,8 @@ class BarChartPlotly extends Component {
     			}
     		]
     	var layout = {
-			  width: this.props.props.current.offsetWidth,
-			  width: 950,
+			  width: this.props.props,
+			  // width: 950,
 			  height: 200,
  				hovermode: false,
 			  margin: {
@@ -73,7 +80,7 @@ class BarChartPlotly extends Component {
 			var options = {
 				displayModeBar: false
 			}	
-    	console.log('windSpeedArray', y, x)
+    	// console.log('windSpeedArray', y, x)
     	return (
         <Plot
           data = { data }
@@ -109,7 +116,10 @@ class BarChartPlotly extends Component {
     //   )
     }
     else{
-      // console.log('wait......')
+      console.log('wait......', dataLength, this.props.props, this)
+      if(this.props.props.current){
+      	console.log('here now!!!')
+      }
       return <div>Loading</div>
     } 
   }
