@@ -64,17 +64,18 @@ class Forecast1 extends Component {
             var curRh = Math.round(100*(Math.exp((17.625*curr.obs.dew_point_temperature_value_1d.value)/(243.04+curr.obs.dew_point_temperature_value_1d.value))/Math.exp((17.625*curr.obs.air_temp_value_1.value)/(243.04+curr.obs.air_temp_value_1.value))))
             var name = curr.name
             var date = new Date()
+            var time = `${date.getHours()}:${date.getMinutes()}` 
             // var day = date.getDate()
             // const shortYear = date.getFullYear().toString()
             const dateText = date.toLocaleString("en-US", {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})
 
             // console.log(curTemp, curWindSpeed, curWindDirect, curRh)
-            obsObject = {dateText, curTemp, curWindSpeed, curWindDirect, curRh, name}
+            obsObject = {dateText, curTemp, curWindSpeed, curWindDirect, curRh, name, time}
         }
       })
       // console.log('obsObject', obsObject, this.d3Ref, this)
       return (
-        <div className="container" style={{backgroundColor: '#f8f9fa'}}>
+        <div className="container" style={{backgroundColor: 'white'}}>
           <div className="row justify-content-start">
             <div className="col-4">
               <span style={{fontSize: '1.5em', fontFamily: 'Roboto, Arial'}}>{ obsObject.name } Forecast</span>
@@ -85,7 +86,7 @@ class Forecast1 extends Component {
           </div>
           <div className="row justify-content-left" >
             <div className="col-4">
-              <span style={{fontSize: '1em', color: '#666', fontFamily: 'Roboto, Arial'}}>{ obsObject.dateText }</span> 
+              <span style={{fontSize: '1em', color: '#666', fontFamily: 'Roboto, Arial'}}>{ obsObject.dateText }  {obsObject.time}</span> 
             </div>
             <div className="col-4">
               
@@ -115,11 +116,11 @@ class Forecast1 extends Component {
             </div>
           </div>
           <div className="row justify-content-between" style={{marginTop: '10px', marginBottom:'0px'}} ref = {this.d3Ref}>
-            <div className="col-12" style ={{color: '#343940', fontSize: '1.1em', fontFamily: 'Roboto, Arial', backgroundColor: '#d2d2d3'}}>
+            <div className="col-12" style ={{color: '#343940', fontSize: '1.1em', fontFamily: 'Roboto, Arial', backgroundColor: '#f8f9fa'}}>
               Max Wind Gust By Day
             </div>
           </div> 
-          <div className="row justify-content-between" style={{marginTop: '0px', marginBottom:'15px', backgroundColor: '#d2d2d3'}} ref = {this.d3Ref}>
+          <div className="row justify-content-between" style={{marginTop: '0px', marginBottom:'15px', backgroundColor: '#f8f9fa'}} ref = {this.d3Ref}>
             <div className="col-12">
               <BarChartPlotly props={this.state.size} />
             </div>

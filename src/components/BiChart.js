@@ -248,14 +248,14 @@ class ErcChart extends Component {
                 
             ],
             direction: 'left',
-            pad: {'r': 5, 't': 5},
+            pad: {'r': 10, 't': 10},
             showactive: true,
             type: 'buttons',
             x: 0.1,
-            xanchor: 'right',
-            y: 1,
-            // y: 5,
-            yanchor: 'bottom' 
+            xanchor: 'left',
+            // y: button_layer_2_height,
+            y: 5,
+            yanchor: 'top' 
         },
         
     ]

@@ -63,6 +63,15 @@ export default class ERCMap extends Component {
       });
     };
 
+    function getZoneName(zone){
+      var nameObj= {
+        1: "Dugway North",
+        2: "Dugway South",
+        3: "Dugway West"
+      }
+      return nameObj[zone]
+    }
+
     var rawsStyleFunction = function(feature,resolution){
       var style = new Style({
             image: new CircleStyle({
@@ -80,11 +89,14 @@ export default class ERCMap extends Component {
     }
     const flickrStyle = feature => {
       var zone = 'fdra' + feature.get('Fire_Dange')
+      // var zoneNameMap = new Map()
+      var zoneName = getZoneName(feature.get('Fire_Dange'))
+      // var zoneName =  zoneNameMap.get(feature.get('Fire_Dange'))
       var dataObj = this.props.data
-      // console.log(this.state.mapColor)
+      console.log(zoneName, feature.get('Fire_Dange'))
       if(dataObj[zone]){
         var dynamicColor = dataObj[zone]['layerColor']
-        console.log('dynamicColor', dynamicColor)
+        // console.log('dynamicColor', dynamicColor)
       }
       else{
       console.log(dataObj)
@@ -108,7 +120,7 @@ export default class ERCMap extends Component {
           stroke: new Stroke({
             color: 'white', width: 3
           }),
-          text: zone
+          text: zoneName
 
         })
       })
@@ -151,8 +163,8 @@ export default class ERCMap extends Component {
       ],
       target: document.getElementById('map'),
       view: new View({
-        center: [-12611222.999392, 4895944.535722],
-        zoom: 9,
+        center: [-12586549.122929, 4901906.623928], //coordinates in EPSG3857. Get new ones here: https://epsg.io/map#srs=3857&x=-12578783.122722&y=4902242.944054&z=10&layer=streets
+        zoom: 10,
       })
     })
     // console.log('this ercmap mount', this.props)

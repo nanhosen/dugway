@@ -333,19 +333,19 @@ export function getNwsForecast(){
       // console.log('speed', speed)
       var forecast = response.data.properties
       var payload = []
+      console.log(forecast.periods)
       // var wantPeriods = [0, 2, 4, 6, 8, 10]
       forecast.periods.map((curr,i) => {
         // var currFcst = forecast.periods[curr]
-        // console.log(i)
+        // console.log(curr)
         // getIconType("sunny") 
         if(curr.isDaytime){
           // console.log('day', i, forecast.periods[i+1])
           // getIconType(curr.shortForecast)
-
           var fcstOb = {
             name: curr.name,
             maxT: curr.temperature,
-            minT: forecast.periods[i+1].temperature,
+            minT: forecast.periods[i+1] ? forecast.periods[i+1].temperature : 'n/a',
             windDirection: curr.windDirection,
             windSpeed: getMaxWind(curr.windSpeed),
             shortForecast: curr.shortForecast,
