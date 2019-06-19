@@ -54,16 +54,16 @@ export class Home extends Component {
                 <footer className="text-center">
                   <div className="container">
                     <div className="row">
-                      <div className="col-sm" style={{backgroundColor: "rgba(40,167,69,0.6)"}}> 
+                      <div className="col-sm" style={{backgroundColor: "#bee1b8"}}> 
                         Low
                       </div>
-                      <div className="col-sm" style={{backgroundColor: "rgba(255, 236, 7, 0.6)"}}>
+                      <div className="col-sm" style={{backgroundColor: "#f7f77b"}}>
                         Moderate
                       </div>
-                      <div className="col-sm" style={{backgroundColor: "rgba(220,53,69,0.8)"}}>
+                      <div className="col-sm" style={{backgroundColor: "#f8bf8a"}}>
                         High
                       </div>
-                      <div className="col-sm" style={{backgroundColor: "#d861a1"}}>
+                      <div className="col-sm" style={{backgroundColor: "#db707c"}}>
                         Extreme
                       </div>
                     </div>

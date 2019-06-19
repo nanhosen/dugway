@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import Grid  from './Grid'
 import Chart from'./ChartTest'
+import ButtonChart from'./ButtonChart'
 import ErcChart from'./ErcChart'
 import ObsChart from'./ObsChart'
 import ObTest from'./ObTest'
@@ -83,6 +84,11 @@ export class StationPage extends Component {
           <div className="row" ref = {this.chartRef}>
             <div className="col-md-auto" >
               <Chart stn={ stnSelected } divWidth = {this.state.chartWidth} />
+            </div>
+          </div>
+          <div className="row" ref = {this.chartRef}>
+            <div className="col-md-auto" >
+              <ButtonChart stn={ stnSelected } divWidth = {this.state.chartWidth} />
             </div>
           </div>
           <div className="row">

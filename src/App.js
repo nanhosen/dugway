@@ -52,12 +52,20 @@ const RouteWithSubRoutes = route => (
 
 
 class App extends Component {
+	constructor(props) {
+    super(props);
+    this.state = {
+      minutes: '00'
+    }
+  }
+
 	componentDidMount(){
 		this.props.getArchive()
 		this.props.makeReq()
 		this.props.getLatest()
 		this.props.getForecast()
 		this.props.getNwsForecast()
+		// setInterval(this.props.getForecast(), 5000)
 		if(this.props.archiveData){
 			console.log(this.props.archiveData)
 		}
@@ -65,7 +73,10 @@ class App extends Component {
 		// dispatch(makeReq())
 	}
 	componentDidUpdate(prevProps){
+
 		if(prevProps.archiveData !== this.props.archiveData){
+			// console.log('update')
+			// setInterval(this.props.getForecast(), 3000)
 
 			this.props.assignAvgAllYears(this.props.archiveData, avgErcBi)
 			// console.log('app did update', this, prevProps)

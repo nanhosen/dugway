@@ -163,7 +163,7 @@ export default class ERCMap extends Component {
       ],
       target: document.getElementById('map'),
       view: new View({
-        center: [-12586549.122929, 4901906.623928], //coordinates in EPSG3857. Get new ones here: https://epsg.io/map#srs=3857&x=-12578783.122722&y=4902242.944054&z=10&layer=streets
+        center: [-12583448.122929, 4901906.623928], //coordinates in EPSG3857 (x, y). Get new ones here: https://epsg.io/map#srs=3857&x=-12578783.122722&y=4902242.944054&z=10&layer=streets
         zoom: 10,
       })
     })

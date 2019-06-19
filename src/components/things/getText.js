@@ -54,33 +54,33 @@ var jolSwitch = avg => ({
 	1: {
 		precautions: 'All operations are GO with routine and standard operating precautions or restrictions. Excellent time for prescribed burns, such as the burning of tumbleweed along fence lines.',
 		level: 'Low',
-		cardColor: '#28a745',
+		cardColor: '#bee1b8',
 		textColor: 'white',
-		layerColor: 'rgba(40,167,69,0.6)'	
+		layerColor: 'rgba(191,226,186,0.8)'	
 	},
 	2: {
 		precautions: 'All operations are GO with routine and standard operating precautions or restrictions. Excellent time for prescribed burns, such as the burning of tumbleweed along fence lines.',
 		level: 'Low',
-		cardColor: '#28a745',
-		layerColor: 'rgba(40,167,69,0.6)'
+		cardColor: '#bee1b8',
+		layerColor: 'rgba(191,226,186,0.8)'
 	},
 	3: {
 		precautions: 'No restrictions within cleared areas or recently burned over areas where fuels have been either removed or not completely reestablished enough to carry fire. In all other areas, firebreaks and greenstrips must be in place and maintained to an effective and acceptable standard to contain a wildfire within that fire management area for which they were designed. All flammable vegetation in the area of activity is of low value and vulnerability. If operations are to be scheduled without fuelbreaks in place, it is strongly recommended that prior to start of a test or training exercise that a standby dozer or grader as a fireline building asset be prepositioned nearby.',
 		level: 'Moderate',
-		cardColor: '#ffec07',
-		layerColor: 'rgba(255, 236, 7, 0.6)'
+		cardColor: '#f7f77a',
+		layerColor: 'rgba(240, 240, 105, 0.8)'
 	},
 	4: {
 		precautions: 'Restrict the use of any heat producing ordnance such as rockets, tracer, HE rounds, and blowing in place operations where vegetation functions as fuel. No restrictions within cleared areas or recently burned over areas where fuels have been either removed or not completely reestablished enough to carry fire. In all other areas, firebreaks and greenstrips must be in place and maintained to an effective standard to contain wildfire if started. If military activities must take place (and they can be), clearance must be obtained from a joint review of the safety training plan by the Fire Department, NRO, and Operations. This joint review will present a Go or NO-GO.',
 		level: 'High',
-		cardColor: '#dc3545',
-		layerColor: 'rgba(220,53,69,0.8)'
+		cardColor: '#f8be8a',
+		layerColor: 'rgba(248, 190, 138, 0.7)'
 	},
 	5: {
 		precautions: 'Use extreme caution and allow only essential and high cost military activities to continue under this Extreme rating. No military activity (testing or training) shall take place that uses heat producing ordnance until the FDA color code is yellow or lower. Exceptions: restrict training to the following ranges: Mustang Village Small Arms Range, Stark Road Rifle Range and Shoot House, and OP1 Thumb; restrict testing to non-combustible improved surfaces: APG, West Vertical, Tower Grid, etc. Commanding Officer approval as a GO decision is essential prior to any training or testing that uses heat producing ordnance (outside of accepted areas). This will be done after the Commanding Officer reviews the joint recommendation by the Fire Department, Natural Resources and an Operations GO decision.',
 		level: 'Extreme',
-		cardColor: '#dc3545',
-		layerColor: 'rgba(220,53,69,0.8)'
+		cardColor: '#db707c',
+		layerColor: 'rgba(204, 98, 109, 0.7)'
 	},
 })[avg]
 

@@ -25,6 +25,7 @@ export function getForecast(){
     axios.get('https://www.ercserver.us/forecast')
     .then((response)=>{
       // console.log(response)
+      console.log('inGetForecast')
       var fdraInfo = {
         fdra1: {
           stations: [420913],
@@ -79,7 +80,7 @@ export function getForecast(){
         fdraInfo[currFdra]['fcstSwfpi'] = fcstSwfpi
         fdraInfo[currFdra]['indexPercentile'] = fcstIndexPerc
         var returnText = getText(fcstSwfpi)
-        // var returnText = getText(5)
+        // var returnText = getText(2)
         var addObj = { ...fdraInfo[currFdra], ...returnText}
         fdraInfo[currFdra] = addObj
       })

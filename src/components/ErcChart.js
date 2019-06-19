@@ -52,35 +52,37 @@ class ErcChart extends Component {
       // console.log(avgXDates)
 
       var selectorOptions = {
-        buttons: [{
-            step: 'month',
-            stepmode: 'backward',
-            count: 1,
-            label: '1m'
-        }, {
-            step: 'month',
-            stepmode: 'backward',
-            count: 3  ,
-            label: '3m'
-        }, 
-        {
-            step: 'month',
-            stepmode: 'backward',
-            count: 6,
-            label: '6m'
-        },{
-            step: 'year',
-            stepmode: 'todate',
-            count: 1,
-            label: 'YTD'
-        }, {
-            step: 'year',
-            stepmode: 'backward',
-            count: 1,
-            label: '1y'
-        }, {
-            step: 'all',
-        }],
+        // buttons: [
+        //   {
+        //     step: 'month',
+        //     stepmode: 'backward',
+        //     count: 1,
+        //     label: '1m'
+        //   }, {
+        //     step: 'month',
+        //     stepmode: 'backward',
+        //     count: 3  ,
+        //     label: '3m'
+        //   }, 
+        //   {
+        //     step: 'month',
+        //     stepmode: 'backward',
+        //     count: 6,
+        //     label: '6m'
+        //   },{
+        //     step: 'year',
+        //     stepmode: 'todate',
+        //     count: 1,
+        //     label: 'YTD'
+        //   }, {
+        //     step: 'year',
+        //     stepmode: 'backward',
+        //     count: 1,
+        //     label: '1y'
+        //   }, {
+        //     step: 'all',
+        //   }
+        // ],
       };
       var sfwpiObj = {
         x:[],
@@ -191,6 +193,7 @@ class ErcChart extends Component {
           width: width, 
           // height: 500, 
           title: `ERC for station ${stn}`,
+          updatemenus: updatemenus,
           yaxis: {
             title: 'ERC',
             range: [0,5]
@@ -210,41 +213,33 @@ class ErcChart extends Component {
             range: ["2019-01-01", lastDate],
             ticklen: 2,
             tickwidth: 1,
-            tickcolor: '#000',
-            rangeselector: selectorOptions,
-            rangeslider: {}
-          },
-          updatemenus: updatemenus
+            tickcolor: '#000'
+            // ,rangeselector: selectorOptions,
+            // rangeslider: {}
+          }
       } 
 
       var updatemenus=[
         {
             buttons: [   
                 {
-                    args: [{'visible': [true, true, false, false]},
-                           {'title': 'Yahoo High'}],
-                    label: 'High',
+                    args: [{'visible': [true, false]},
+                           {'title': 'ERC'}],
+                    label: 'ERC',
                     method: 'update'
                 },
                 {
-                    args: [{'visible': [false, false, true, true,]},
-                           {'title': 'Yahoo Low'}],
-                    label: 'Low',
+                    args: [{'visible': [false, true]},
+                           {'title': 'BI'}],
+                    label: 'BI',
                     method: 'update'
                 },
                 {
-                    args: [{'visible': [true, true, true, true,]},
-                           {'title': 'Yahoo'}],
+                    args: [{'visible': [true, true]},
+                           {'title': 'Both'}],
                     label: 'Both',
                     method: 'update'
-                },
-                {
-                    args: [{'visible': [true, false, true, false,]},
-                           {'title': 'Yahoo',
-                            'annotations': []}],
-                    label: 'Reset',
-                    method: 'update'
-                },
+                }
                 
             ],
             direction: 'left',
@@ -252,10 +247,10 @@ class ErcChart extends Component {
             showactive: true,
             type: 'buttons',
             x: 0.1,
-            xanchor: 'right',
+            xanchor: 'left',
             y: 1,
             // y: 5,
-            yanchor: 'bottom' 
+            yanchor: 'top' 
         },
         
     ]
