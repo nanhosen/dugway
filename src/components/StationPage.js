@@ -81,21 +81,13 @@ export class StationPage extends Component {
           <div className="row">
 
           </div>
-          <div className="row" ref = {this.chartRef}>
-            <div className="col-md-auto" >
-              <Chart stn={ stnSelected } divWidth = {this.state.chartWidth} />
-            </div>
-          </div>
+
           <div className="row" ref = {this.chartRef}>
             <div className="col-md-auto" >
               <ButtonChart stn={ stnSelected } divWidth = {this.state.chartWidth} />
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-auto" >
-              <ErcChart stn={ stnSelected } divWidth = {this.state.chartWidth} />
-            </div>
-          </div>
+
 
           <div className="row" ref = { this.heatMapRef }>
             <div className="col-md-auto">
