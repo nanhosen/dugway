@@ -57,6 +57,7 @@ class ButtonChart extends Component {
         x:[],
         y:[],
         yaxis: 'y2',
+        visible: false,
         type: 'scatter', 
         name: 'ERC',
         line: {
@@ -69,6 +70,7 @@ class ButtonChart extends Component {
         x:avgXDates,
         y:avgErcY,
         yaxis: 'y2',
+        visible: false,
         type: 'scatter', 
         name: 'Average ERC (2010-2018)',
         line: {
@@ -160,17 +162,18 @@ class ButtonChart extends Component {
         {
             buttons: [   
                 {
-                    args: [{'visible': [true, true, false, false]}],
+                    args: [{'visible': [true, true, false, false]},
+                      {'title': 'BI'}],
                     label: 'BI',
                     method: 'update'
                 },
                 {
-                    args: [{'visible': [false, false, true, true]}],
+                    args: [{'visible': [false, false, true, true]},{'title': 'ERC'}],
                     label:'ERC',
                     method:'update'
                 },
                 {
-                    args: [{'visible': [true, true, true, true]}],
+                    args: [{'visible': [true, true, true, true]},{'title': 'BI + ERC'}],
                     label:'Both',
                     method:'update'
                 }             
@@ -236,12 +239,13 @@ class ButtonChart extends Component {
       updatemenus:updatemenus,
       autosize: autosize,
       width: width,
+      title: 'BI',
       xaxis: {
         type: 'date',
         ticks: 'outside',
         tick0: firstDate,
         dtick: 1296000000,
-        range: ["2019-5-4", lastDate],
+        range: ["2019-01-01", lastDate],
         ticklen: 2,
         tickwidth: 1,
         tickcolor: '#000'
