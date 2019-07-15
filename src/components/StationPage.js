@@ -11,6 +11,10 @@ import HighChart from'./HighChartTest'
 import Slider from './SliderBar'
 import HeatMapChart from './HeatMapChart'
 import Forecast1 from './Forecast1'
+import Gauge from './Gauge'
+import LinearGauge from './LinearGauge'
+import IndexTable from './IndexTable'
+import ObsDisplay from './ObsDisplay'
 
 export class StationPage extends Component {
 	constructor(props) {
@@ -60,8 +64,15 @@ export class StationPage extends Component {
   	}
   	else{
       var stnSelected = this.props.match.path.slice(1)
-  		// console.log('dataaa data', this)
-      // var stnArray = Object.keys(this.props.archiveData[Object.keys(this.props.archiveData)[0]])
+      var stnName = stnSelected
+      console.log(this.props)
+      Object.keys(this.props.forecastData).map(curr => {
+        var currStn = this.props.forecastData[curr].stations
+        if(currStn.indexOf(parseInt(stnSelected)) >= 0){
+          stnName = this.props.forecastData[curr].prettyName
+        }
+      })
+      // var stnArray = Object.keys(this.props.archiveData[Object.keys(``this.props.archiveData)[0]])
       // console.log('stnArray', stnArray)
       var divWidth = this.chartRef.current ? this.chartRef.current.offsetWidth : null
       var divWidthHeat = this.heatMapRef.current ? this.heatMapRef.current.offsetWidth : null
@@ -69,18 +80,26 @@ export class StationPage extends Component {
 			return (
 				<div className="container">
           <div className="row">
-            
-              <Slider />
-            
-          </div> 
-          <div className="row">
-            
-              <Forecast1 stn={stnSelected}/>
-            
-          </div> 
-          <div className="row">
-
+            <div className="col-12 text-left">
+              <span style={{fontSize: '1.8em', fontFamily: 'Roboto, Arial', fill:"#5A5A5A"}}>{stnName}</span>
+            </div>
           </div>
+          <div className="row">
+              <ObsDisplay stn={stnSelected} divWidth = {this.state.chartWidth}/>
+          </div>
+          <div className="row">
+            <div className="col-12 text-center" id="gauge-chart3">
+              <LinearGauge stn={stnSelected} divWidth = {this.state.chartWidth}/>
+            </div>
+          </div>
+          <div className="row" style={{paddingTop: '20px', paddingBottom: '20px'}}>
+            <div className="col-12 text-center">
+              <IndexTable stn={stnSelected} divWidth = {this.state.chartWidth}/>
+            </div>
+          </div>
+          <div className="row" >
+              <Forecast1 stn={stnSelected}/>
+          </div> 
 
           <div className="row" ref = {this.chartRef}>
             <div className="col-md-auto" >

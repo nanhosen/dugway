@@ -124,14 +124,15 @@ class ButtonChart extends Component {
         biObj['x'].push(newDate)
         biAvgObj['x'].push(newDate)
         ercAvgObj['x'].push(newDate)
+        // console.log(allData)
         var sfwpiFcst = allData[curr][stn] ? allData[curr][stn]['swfpiFcst'] : 0
         var erc = allData[curr][stn] ? allData[curr][stn]['erc'] : 0
         var bi = allData[curr][stn] ? allData[curr][stn]['bi'] : 0
         // console.log(avgData[curr][stn]['avgBi'])
         sfwpiObj['marker']['color'].push(getBarColor(sfwpiFcst))
         sfwpiObj['y'].push(parseInt(sfwpiFcst))
-        ercObj['y'].push(parseInt(erc))
-        biObj['y'].push(parseInt(bi))
+        ercObj['y'].push(parseInt(erc) * 1)
+        biObj['y'].push(parseInt(bi) * 1)
         
 
       })
@@ -144,7 +145,7 @@ class ButtonChart extends Component {
 
       // var chartData = [ercAvgObj, ercObj, biAvgObj, biObj]
       var chartData = [biAvgObj, biObj, ercAvgObj, ercObj]
-      console.log(chartData)
+      // console.log(chartData)
       // console.log(avgXDates)
       var trace1 = {
       x: [1, 2, 3, 4],
@@ -163,12 +164,12 @@ class ButtonChart extends Component {
             buttons: [   
                 {
                     args: [{'visible': [true, true, false, false]},
-                      {'title': 'BI'}],
+                      {'title': 'Burning Index'}],
                     label: 'BI',
                     method: 'update'
                 },
                 {
-                    args: [{'visible': [false, false, true, true]},{'title': 'ERC'}],
+                    args: [{'visible': [false, false, true, true]},{'title': 'Energy Release Component'}],
                     label:'ERC',
                     method:'update'
                 },
@@ -239,7 +240,7 @@ class ButtonChart extends Component {
       updatemenus:updatemenus,
       autosize: autosize,
       width: width,
-      title: 'BI',
+      title: 'Burning Index',
       xaxis: {
         type: 'date',
         ticks: 'outside',

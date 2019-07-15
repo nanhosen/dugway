@@ -5,7 +5,7 @@ import VectorSource from 'ol/source/Vector.js'
 import { Icon, Text, Fill, Stroke, Style } from 'ol/style.js'
 import GeoJSON from 'ol/format/GeoJSON'
 
-import { WIMS_DATA, ARCHIVE_DATA, OBS_DATA } from './types'
+import { WIMS_DATA, ARCHIVE_DATA, OBS_DATA, FORECAST_DATA, NWS_FCST, AVG_DATA } from './types'
 import { FETCH_DATA } from './types'
 
 import { getText } from '../components/things/getText'
@@ -19,6 +19,83 @@ function makeAvg(array){
   return (array.reduce((curr,prev) => (parseInt(curr) + parseInt(prev)))) / array.length
 }
 
+export function getForecast(){
+  // console.log('getForecast')
+  return function(dispatch){
+    axios.get('https://www.ercserver.us/forecast')
+    .then((response)=>{
+      // console.log(response)
+      console.log('inGetForecast')
+      var fdraInfo = {
+        fdra1: {
+          stations: [420913],
+          // stations: [260117],
+          fcstSwfpi: null,
+          indexPercentile: null,
+          forecastDate: null,
+          prettyName: 'FDRA 1'
+        },
+        fdra2: {
+          stations: [420916],
+          // stations: [260117],
+          fcstSwfpi: null,
+          indexPercentile: null,
+          forecastDate: null,
+          prettyName: 'FDRA 2'
+        },
+        fdra3: {
+          stations: [420916],
+          // stations: [260117],
+          fcstSwfpi: null,
+          indexPercentile: null,
+          forecastDate: null,
+          prettyName: 'FDRA 3'
+        }
+        // fdra4: {
+        //   stations: [420917],
+        //   // stations: [260117],
+        //   fcstSwfpi: null,
+        //   indexPercentile: null,
+        //   forecastDate: null,
+        //   prettyName: 'FDRA 4'
+        // }
+      }
+      var fdraArray = Object.keys(fdraInfo)
+      fdraArray.map((currFdra, i)=>{
+        var stnArray = fdraInfo[currFdra].stations
+        var swfpiFcstArray = []
+        var indexPercArray = []
+        stnArray.map(currStn => {
+          // console.log(response.data[currStn])
+          if(response.data[currStn]){
+            if(response.data[currStn].obDate){
+              fdraInfo[currFdra]['forecastDate'] = response.data[currStn].obDate
+            }
+          }
+          swfpiFcstArray.push(response.data[currStn]['swfpiFcst'])
+          indexPercArray.push(response.data[currStn]['fcstIndexPerc'])
+        })
+        var fcstSwfpi = makeAvg(swfpiFcstArray)
+        var fcstIndexPerc = makeAvg(indexPercArray)
+        fdraInfo[currFdra]['fcstSwfpi'] = fcstSwfpi
+        fdraInfo[currFdra]['indexPercentile'] = fcstIndexPerc
+        // var returnText = getText(fcstSwfpi)
+        var returnText = getText(i)
+        var addObj = { ...fdraInfo[currFdra], ...returnText}
+        fdraInfo[currFdra] = addObj
+      })
+      // console.log(fdraInfo)
+      var payload = fdraInfo 
+      // console.log(payload, 'payload')
+      dispatch({ type: FORECAST_DATA, payload })
+
+     })
+    .catch(function(err){
+      console.log(err.message)
+    })
+  }
+}
+
 export function makeReq() {
   return function(dispatch) {
     var parseString = xml2js.parseString
@@ -29,36 +106,40 @@ export function makeReq() {
     
     Promise.all(axiosArray.map(url => axios.get(url)))
     .then(values => {
-      console.log('values', values)
+      // console.log('values', values)
       var fdraInfo = {
         fdra1: {
           stations: [420913],
           // stations: [260117],
           jolValAr: [],
-          avgJolIndex: 1,
+          fcstSwfpi: null,
+          avgJolIndex: null,
           prettyName: 'FDRA 1'
         },
         fdra2: {
           stations: [420916],
           // stations: [260117],
           jolValAr: [],
-          avgJolIndex: 2,
+          fcstSwfpi: null,
+          avgJolIndex: null,
           prettyName: 'FDRA 2'
         },
         fdra3: {
           stations: [420916],
           // stations: [260117],
           jolValAr: [],
-          avgJolIndex: 3,
+          fcstSwfpi: null,
+          avgJolIndex: null,
           prettyName: 'FDRA 3'
-        },
-        fdra4: {
-          stations: [420917],
-          // stations: [260117],
-          jolValAr: [],
-          avgJolIndex: 5,
-          prettyName: 'FDRA 4'
         }
+        // fdra4: {
+        //   stations: [420917],
+        //   // stations: [260117],
+        //   jolValAr: [],
+        //   fcstSwfpi: null,
+        //   avgJolIndex: null,
+        //   prettyName: 'FDRA 4'
+        // }
       }
 
       var fdraArray = Object.keys(fdraInfo)
@@ -71,23 +152,25 @@ export function makeReq() {
       // day3 [stn1val, stn2val, stn3val ]
       //the 0 is for the first station and the 1 is for the second station. The values inside the array for each station represent the values for each day
       fdraArray.map(currFdra => {
-        console.log('current fdra: ', currFdra)
+        // console.log('current fdra: ', currFdra)
         var stnArray = fdraInfo[currFdra].stations
         var fdraArray = [] // has 3 values, one value of averaged index for all stations for each day. each value in array represents one day
         values.map((curDay, i) => {
           // console.log(curDay)
           var dayArray = [] // day array has the value for each station for each day. So, if there are 3 stations there will be 3 vals, 1 station 1 value
           stnArray.map((curStn, j) => {
+            // console.log('curstn', curStn, curDay['data'][curStn])
             dayArray.push(curDay['data'][curStn]['jolInd']) 
           })
+          // console.log('dayarray', dayArray)
           var dayAvg = makeAvg(dayArray) //single number average of all stations for one day for one fdra
           fdraArray.push(dayAvg)
           fdraInfo[currFdra]['jolValAr'].push(dayArray)
         })
-        // fdraInfo[currFdra]['avgJolIndex'] = makeAvg(fdraArray)
-        // console.log(fdraInfo[currFdra]['avgJolIndex'])
+        fdraInfo[currFdra]['avgJolIndex'] = makeAvg(fdraArray)
+        // console.log(makeAvg(fdraArray))
         var returnText = getText(makeAvg(fdraArray))
-        // var returnText = getText(fdraInfo[currFdra]['avgJolIndex'])
+        // var returnText = getText(5)
         var addObj = { ...fdraInfo[currFdra], ...returnText}
         fdraInfo[currFdra] = addObj
       })
@@ -109,28 +192,51 @@ export function makeReq() {
 }
 
 
-export function getArchive(months) {
-  const payload = archiveData
-  // console.log('archiveData payload', payload)
-  return {
-    type: ARCHIVE_DATA,
-    payload
+// export function getArchive(months) {
+//   const payload = archiveData
+//   // console.log('archiveData payload', payload)
+//   return {
+//     type: ARCHIVE_DATA,
+//     payload
+//   }
+// }
+
+// export function getArchive() {
+//   return function(dispatch){
+//     axios.get('https://www.ercserver.us/dugwayArchive')
+//     .then((response)=>{
+//       // console.log('archiveresponse', response.data)
+//       // console.log('archivedata', response.data)
+//       const payload = response.data
+//       console.log('archiveData payload', payload)
+//       dispatch({ type: ARCHIVE_DATA, payload })
+//     })
+//     .catch(function(err){
+//       console.log(err.message)
+//     })
+//   }
+// }
+
+export function getArchive(){
+  // console.log('getForecast')
+  return function(dispatch){
+    axios.get('https://www.ercserver.us/dugwayArchive')
+    .then((response)=>{
+      const payload = response.data
+      // console.log(response)
+      
+      // console.log(payload, 'payload')
+      dispatch({ type: ARCHIVE_DATA, payload })
+
+     })
+    .catch(function(err){
+      console.log(err.message)
+    })
   }
 }
 
 export function getLatest(){
   return function(dispatch){
-    var nowDate = new Date(Date.now())
-    var begDate = new Date().setDate(new Date().getDate()-3) //3 days of history
-    var begMonth = new Date(begDate).getUTCMonth() + 1
-    var nowMonth = nowDate.getUTCMonth() + 1
-    if(nowMonth<10){
-      nowMonth = `0${nowMonth}`
-    }
-    var endDate = addZero(nowDate.getUTCFullYear()) + addZero(nowMonth)+addZero(nowDate.getUTCDate())+addZero(nowDate.getUTCHours())+addZero(nowDate.getUTCMinutes())
-    var startDate = addZero(new Date(begDate).getUTCFullYear()) + addZero(begMonth) + addZero(new Date(begDate).getUTCDate()) + addZero(new Date(begDate).getUTCHours()) +  addZero(new Date(begDate).getUTCMinutes())
-    console.log(startDate, endDate)
-    // start=201904290000&end=201904292234
     const stns = ['TT390', 'TT391', 'TT392'] 
     const obsData = 
       [
@@ -180,58 +286,135 @@ export function getLatest(){
   }
 }
 
-// export function getTimeSeries(){
-//   return function(dispatch){
-//     const stns = ['DPG25', 'DPG24', 'DPG26'] 
-//     const obsData = 
-//       [
-//         {
-//           stid: 'DPG25',
-//           wimsId: 420913,
-//           name: null,
-//           obs: null
-//         },
-//         {
-//           stid: 'DPG24',
-//           wimsId: 420916,
-//           name: null,
-//           obs: null
-//         },
-//         {
-//           stid: 'DPG26',
-//           wimsId: 420917,
-//           name: null,
-//           obs: null
-//         }
+export function getNwsForecast(){
+  //
+  return function(dispatch){
+    axios.get('https://api.weather.gov/gridpoints/SLC/58,163/forecast')
+    .then((response)=>{
+      function getMaxWind(string){
+        var windArray = string.split(" ")
+        var mphLoc = windArray.indexOf("mph")
+        var maxSpeed = parseInt(windArray[mphLoc-1])
+        // console.log(windArray.indexOf("mph"), windArray, maxSpeed)
+        return maxSpeed
+      }
+      function getIconType(string){
+        var fcstArray = string.split(" ")
+        // var typeArray = ["Thunderstorms", "Rain", "Mostly" ]
+        // var type = 
+        //   {
+        //     Rain:"rain",
+        //     Mostly:"cloudy",
+        //     sunny: "sunny",
+        //     Thunderstorms: "thunderstorms"
+        //   }
+        //   console.log(fcstArray, fcstArray.indexOf("Thunderstorms"))
+        if(fcstArray.indexOf("Thunderstorms") >=0)  {
+          return "thunderstorms"
+        }
+        else if(fcstArray.indexOf("Rain") >=0)  {
+          return "rain"
+        }
+        else if(fcstArray.indexOf("Mostly") >=0)  {
+          return "cloudy"
+        }
+        else{
+          return "sunny"
+        }
+        // typeArray.map(curr => {
+        //   console.log('curr', curr)
+        //   if(fcstArray.indexOf(curr) == 0){
+        //     console.log(type[curr], curr, string)
+        //     return 
+        //   }
+        // })  
 
-//       ]
-//     const axiosArray = stns.map(curr => {
-//       return `https://api.synopticdata.com/v2/stations/timeseries?&token=ea0ea69fd87b4eac81bfc08cb270b8e8&stid=${curr}&start=${startTime}&end=${endTime}`
-//     })
-//     Promise.all(axiosArray.map (url => axios.get(url)))
-//     .then(values => {
-//       // console.log('values', values)
-//       values.map(curr => {
-//         var valStnId = curr.data.STATION[0].STID
-//         obsData.map((currPos,i) => {
-//           if(valStnId == currPos.stid){
-//             // console.log(obsData[i], valStnId, curr.data.STATION[0].OBSERVATIONS)
-//             obsData[i].obs = curr.data.STATION[0].OBSERVATIONS
-//             obsData[i].name = curr.data.STATION[0].NAME
-//           }
-//         })
-//       })
-//       // console.log('obsData', obsData)
-//       var payload = { obsData }
-//       dispatch ({ type: OBS_DATA, payload})
-//     })
-//     .catch(function(err){
-//       console.log(err.message)
-//     })
-//   }
-// }
+      }
+      var speed = getMaxWind("7 to 16 mph")
+      // console.log('speed', speed)
+      var forecast = response.data.properties
+      var payload = []
+      console.log(forecast.periods)
+      // var wantPeriods = [0, 2, 4, 6, 8, 10]
+      forecast.periods.map((curr,i) => {
+        // var currFcst = forecast.periods[curr]
+        // console.log(curr)
+        // getIconType("sunny") 
+        if(curr.isDaytime){
+          // console.log('day', i, forecast.periods[i+1])
+          // getIconType(curr.shortForecast)
+          var fcstOb = {
+            name: curr.name,
+            maxT: curr.temperature,
+            minT: forecast.periods[i+1] ? forecast.periods[i+1].temperature : 'n/a',
+            windDirection: curr.windDirection,
+            windSpeed: getMaxWind(curr.windSpeed),
+            shortForecast: curr.shortForecast,
+            iconType: getIconType(curr.shortForecast)
+          }
+        payload.push(fcstOb)
+        }
+      })
+      // var payload = 'forecast test'
+      console.log('nwsresp', forecast)
+      console.log('payloadNWS', payload)
+      dispatch ({ type: NWS_FCST, payload})
+    })
+  }
+}
 
-
+export function assignAvgAllYears(archiveData, avgData){
+  var nameMap = new Map([['dugwayN',420913],['dugwayS',420916],['dugwayW',420917]])
+  var archiveDateArray = Object.keys(archiveData)
+  // console.log(archiveDateArray)
+  var yearsArray = archiveDateArray.reduce((prev,curr)=>{
+    var year = new Date(curr).getFullYear()
+    if(prev.indexOf(year) < 0 ){
+      prev.push(year)
+    }
+    return prev
+  }, [])
+  var stnArray = Object.keys(avgData)
+  // console.log(stnArray)
+  var avgArray = []
+  var avgObj = {}
+  yearsArray.map(currYear => {
+    stnArray.map((currAvgStn) => {
+      // console.log(nameMap.get(currAvgStn))
+      avgData[currAvgStn].map(currData => {
+        var year = currYear.toString()
+        var fullDate = `${currData.date} ${year}`
+        var day = new Date(fullDate).toLocaleString('en-En',{day: "2-digit"})
+        var month = new Date(fullDate).toLocaleString('en-En',{month: "2-digit"})
+        var year = new Date(fullDate).toLocaleString('en-En',{year: "numeric"})
+        var formatDate = `${month}/${day}/${year}`
+        var avgBi= currData.avgBi
+        var avgErc= currData.avgErc
+        if(!avgObj[formatDate]){
+          // console.log('not', avgObj[formatDate])
+          avgObj[formatDate] = {}
+        }
+        // console.log(avgObj[formatDate])
+        avgObj[formatDate][nameMap.get(currAvgStn)] = {
+          name: currAvgStn,
+          avgBi,
+          avgErc
+        }
+        avgArray.push({
+          formatDate,
+          avgBi,
+          avgErc
+        })
+      // console.log(formatDate, currData, currAvgStn)
+      })
+    })
+  })
+  // console.log(avgObj, nameMap)
+  var payload = avgObj
+  return function(dispatch){
+    dispatch ({ type: AVG_DATA, payload})
+  }
+}
 
 
 // export function fdaaLayer(fdraData) {
@@ -301,7 +484,3 @@ export function getLatest(){
 // export default fdaaLayer
 
 
-function addZero(number){
-  var length = number.toString().length
-  return length < 2 ? `0${number}` : number.toString()
-}

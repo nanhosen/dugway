@@ -49,7 +49,7 @@ class BarChartPlotly extends Component {
     	var layout = {
 			  width: this.props.props,
 			  // width: 950,
-			  height: 200,
+			  height: 100,
  				hovermode: false,
 			  margin: {
 			    l: 0,

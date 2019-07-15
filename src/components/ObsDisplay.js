@@ -5,7 +5,7 @@ import { WiFahrenheit, WiDirectionUp, WiDirectionUpRight, WiDirectionRight, WiDi
 import drawChart from './things/d3/barChart'
 import BarChartPlotly from './BarChartPlotly'
 
-class Forecast1 extends Component {
+class ObsDisplay extends Component {
   constructor(props) {
     super(props)
     this.d3Ref = React.createRef()
@@ -49,41 +49,76 @@ class Forecast1 extends Component {
     var iconUrl5 = `https://googlesamples.github.io/web-fundamentals/fundamentals/design-and-ux/responsive/${googleWxIcons[5]}.png`
     // console.log(iconUrl)
 
-    if(Object.keys(this.props.nwsForecast).length>0 && this.props.stn){
+    if(this.props.stn && this.props.obsData.obsData){
       var forecast = this.props.nwsForecast
       var firstName = forecast[0].name
       var obsObject
 
       // console.log(this.props.obsData.obsData)
-      
+      this.props.obsData.obsData.map(curr => {
+        // console.log(curr)
+        if(curr.wimsId == this.props.stn){
+            var curTemp = Math.round((curr.obs.air_temp_value_1.value * (9/5)) + 32)
+            var curWindSpeed = Math.round(curr.obs.peak_wind_speed_value_1.value)
+            var curWindDirect = getWindDir(Math.round(curr.obs.peak_wind_direction_value_1.value))
+            var curRh = Math.round(100*(Math.exp((17.625*curr.obs.dew_point_temperature_value_1d.value)/(243.04+curr.obs.dew_point_temperature_value_1d.value))/Math.exp((17.625*curr.obs.air_temp_value_1.value)/(243.04+curr.obs.air_temp_value_1.value))))
+            var name = curr.name
+            var date = new Date()
+            var time = `${date.getHours()}:${date.getMinutes()}` 
+            // var day = date.getDate()
+            // const shortYear = date.getFullYear().toString()
+            const dateText = date.toLocaleString("en-US", {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})
+
+            // console.log(curTemp, curWindSpeed, curWindDirect, curRh)
+            obsObject = {dateText, curTemp, curWindSpeed, curWindDirect, curRh, name, time}
+        }
+      })
       // console.log('obsObject', obsObject, this.d3Ref, this)
       return (
         <div className="container" style={{backgroundColor: 'white'}}>
           <div className="row justify-content-start">
             <div className="col-4">
-              <span style={{fontSize: '1.3em', fontFamily: 'Roboto, Arial'}}>National Weather Service Forecast</span>
+              <span style={{fontSize: '1.3em', fontFamily: 'Roboto, Arial'}}>Current Observation</span>
             </div>
           </div>
-          <div className="row justify-content-between" style={{marginTop: '10px', marginBottom:'0px'}} ref = {this.d3Ref}>
-            <div className="col-12" style ={{color: '#343940', fontSize: '1.1em', fontFamily: 'Roboto, Arial', backgroundColor: '#f8f9fa'}}>
-              Max Wind Gust By Day
+          <div className="row justify-content-left" >
+            <div className="col-4">
+              <span style={{fontSize: '1em', color: '#666', fontFamily: 'Roboto, Arial'}}>{ obsObject.dateText }  {obsObject.time} MDT</span> 
             </div>
-          </div> 
-          <div className="row justify-content-between" style={{marginTop: '0px', marginBottom:'15px', backgroundColor: '#f8f9fa'}} ref = {this.d3Ref}>
-            <div className="col-12">
-              <BarChartPlotly props={this.state.size} />
+            <div className="col-4">
+              
             </div>
-          </div>  
-          <div className="row justify-content-between" style={{marginTop: '10px', marginBottom:'15px'}}>
-            <MakeForecastDay data = {this.props.nwsForecast} />
-            
           </div>
+          <div className="row justify-content-left">
+            <div className="col-4">
+              <span style ={{fontSize: '1em', color: '#666', fontFamily: 'Roboto, Arial'}}>Overcast</span>
+            </div>
+            <div className="col-4">
+              
+            </div>
+          </div>
+          <div className="row justify-content-left">
+            <div className="col-2 align-middle">
+              <div className = "row">
+                <div className="col-md-auto" style={{paddingRight: "0px"}}>
+                  <img src= {iconUrl}></img>
+                </div>
+                <div className="col-md-auto align-self-center" style={{paddingLeft: "0px"}}>
+                  <span style={{fontSize: '1.5em'}}>{ obsObject.curTemp }&deg;</span>
+                </div>  
+              </div> 
+            </div>
+            <div className="col-3">
+              Humidity: { obsObject.curRh }%<br />Wind: { obsObject.curWindSpeed } mph { obsObject.curWindDirect }<br />
+            </div>
+          </div>
+          
         </div>
            
       )
     }
     else{
-      return(<div>Forecast Loading</div>)
+      return(<div>Observation Loading</div>)
     }
     
     
@@ -151,4 +186,4 @@ const mapStateToProps = reduxState => {
   // console.log('this WeatherBar state', state)
   return state
 }
-export default connect(mapStateToProps)(Forecast1)
+export default connect(mapStateToProps)(ObsDisplay)

@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux'
 import reduxThunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router } from 'react-router-dom' 
 
 import { makeReq, getArchive } from './actions' 
 import './index.css';

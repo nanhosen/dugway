@@ -34,11 +34,11 @@ const routes = [
 	},
 	{ 
 		component: Home
-	},
-	{
-		path: '/',
-		component: Home
 	}
+	// {
+	// 	path: '/',
+	// 	component: Home
+	// }
 ]
 
 const RouteWithSubRoutes = route => (

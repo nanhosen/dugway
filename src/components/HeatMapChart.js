@@ -63,6 +63,7 @@ class HeatMap extends Component {
       // console.log(dateArray)
       // var allDays = [new Date("1/1")]
       var dateArrayNoYear = ["January 1"]
+      var text = []
       var d = 0
       var d0 = new Date("1/1/2018")
       while (d<365){
@@ -84,6 +85,7 @@ class HeatMap extends Component {
       var iAr = []
       var zAr = [[],[]]
       var bigZ = [[],[],[]]
+      var labelAr = [[],[],[]]
 
 
 
@@ -131,12 +133,16 @@ class HeatMap extends Component {
             [1.0, '#db707c'],
         ],
         type: 'heatmap',
+        // zsmooth: 'best'
         // colorscale: colorscaleValue,
       }]; 
       dateArrayNoYear.map(curr => {
         bigZ[0].push(0)
         bigZ[1].push(0)
-        bigZ[2].push(0) 
+        bigZ[2].push(0)
+        labelAr[0].push(0)
+        labelAr[1].push(0)
+        labelAr[2].push(0) 
       })
       // console.log(JSON.stringify(dateArray))
       dateArray.map((curr, i) => {

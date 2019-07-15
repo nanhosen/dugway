@@ -24,8 +24,8 @@ export function getForecast(){
   return function(dispatch){
     axios.get('https://www.ercserver.us/forecast')
     .then((response)=>{
-      // console.log(response)
-      console.log('inGetForecast')
+      console.log('res',response)
+      // console.log('inGetForecast')
       var fdraInfo = {
         fdra1: {
           stations: [420913],
@@ -33,7 +33,9 @@ export function getForecast(){
           fcstSwfpi: null,
           indexPercentile: null,
           forecastDate: null,
-          prettyName: 'FDRA 1'
+          prettyName: 'Dugway North',
+          ercFcst:null,
+          biFcst:null
         },
         fdra2: {
           stations: [420916],
@@ -41,15 +43,19 @@ export function getForecast(){
           fcstSwfpi: null,
           indexPercentile: null,
           forecastDate: null,
-          prettyName: 'FDRA 2'
+          prettyName: 'Dugway South',
+          ercFcst:null,
+          biFcst:null
         },
         fdra3: {
-          stations: [420916],
+          stations: [420917],
           // stations: [260117],
           fcstSwfpi: null,
           indexPercentile: null,
           forecastDate: null,
-          prettyName: 'FDRA 3'
+          prettyName: 'Dugway West',
+          ercFcst:null,
+          biFcst:null
         }
         // fdra4: {
         //   stations: [420917],
@@ -61,7 +67,7 @@ export function getForecast(){
         // }
       }
       var fdraArray = Object.keys(fdraInfo)
-      fdraArray.map(currFdra=>{
+      fdraArray.map((currFdra, i)=>{
         var stnArray = fdraInfo[currFdra].stations
         var swfpiFcstArray = []
         var indexPercArray = []
@@ -74,13 +80,15 @@ export function getForecast(){
           }
           swfpiFcstArray.push(response.data[currStn]['swfpiFcst'])
           indexPercArray.push(response.data[currStn]['fcstIndexPerc'])
+          fdraInfo[currFdra]['ercFcst'] = response.data[currStn]['erc']
+          fdraInfo[currFdra]['biFcst'] = response.data[currStn]['bi']
         })
         var fcstSwfpi = makeAvg(swfpiFcstArray)
         var fcstIndexPerc = makeAvg(indexPercArray)
         fdraInfo[currFdra]['fcstSwfpi'] = fcstSwfpi
         fdraInfo[currFdra]['indexPercentile'] = fcstIndexPerc
         var returnText = getText(fcstSwfpi)
-        // var returnText = getText(2)
+        // var returnText = getText(i+3)
         var addObj = { ...fdraInfo[currFdra], ...returnText}
         fdraInfo[currFdra] = addObj
       })
@@ -114,7 +122,10 @@ export function makeReq() {
           jolValAr: [],
           fcstSwfpi: null,
           avgJolIndex: null,
-          prettyName: 'FDRA 1'
+          prettyName: 'FDRA 1',
+          ercOb: null,
+          biOb: null,
+          obDate: null
         },
         fdra2: {
           stations: [420916],
@@ -122,15 +133,21 @@ export function makeReq() {
           jolValAr: [],
           fcstSwfpi: null,
           avgJolIndex: null,
-          prettyName: 'FDRA 2'
+          prettyName: 'FDRA 2',
+          ercOb: null,
+          biOb: null,
+          obDate: null
         },
         fdra3: {
-          stations: [420916],
+          stations: [420917],
           // stations: [260117],
           jolValAr: [],
           fcstSwfpi: null,
           avgJolIndex: null,
-          prettyName: 'FDRA 3'
+          prettyName: 'FDRA 3',
+          ercOb: null,
+          biOb: null,
+          obDate: null
         }
         // fdra4: {
         //   stations: [420917],
@@ -154,13 +171,18 @@ export function makeReq() {
       fdraArray.map(currFdra => {
         // console.log('current fdra: ', currFdra)
         var stnArray = fdraInfo[currFdra].stations
-        var fdraArray = [] // has 3 values, one value of averaged index for all stations for each day. each value in array represents one day
+        var fdraArray = []
+        var ercArray = []
+        var biArray = [] // has 3 values, one value of averaged index for all stations for each day. each value in array represents one day
         values.map((curDay, i) => {
           // console.log(curDay)
           var dayArray = [] // day array has the value for each station for each day. So, if there are 3 stations there will be 3 vals, 1 station 1 value
           stnArray.map((curStn, j) => {
             // console.log('curstn', curStn, curDay['data'][curStn])
             dayArray.push(curDay['data'][curStn]['jolInd']) 
+            ercArray.push(curDay['data'][curStn]['erc']) 
+            biArray.push(curDay['data'][curStn]['bi']) 
+            // console.log('hi', curDay['data'][curStn]['erc'])
           })
           // console.log('dayarray', dayArray)
           var dayAvg = makeAvg(dayArray) //single number average of all stations for one day for one fdra
@@ -168,6 +190,8 @@ export function makeReq() {
           fdraInfo[currFdra]['jolValAr'].push(dayArray)
         })
         fdraInfo[currFdra]['avgJolIndex'] = makeAvg(fdraArray)
+        fdraInfo[currFdra]['ercOb'] = makeAvg(ercArray)
+        fdraInfo[currFdra]['biOb'] = makeAvg(biArray)
         // console.log(makeAvg(fdraArray))
         var returnText = getText(makeAvg(fdraArray))
         // var returnText = getText(5)
@@ -177,7 +201,8 @@ export function makeReq() {
 
       // console.log(fdraInfo)
       
-      var payload = { fdraInfo, archiveData }
+      // var payload = { fdraInfo, archiveData }
+      var payload = { fdraInfo }
       // console.log(payload, 'payload')
       dispatch({ type: WIMS_DATA, payload })
         
@@ -291,6 +316,7 @@ export function getNwsForecast(){
   return function(dispatch){
     axios.get('https://api.weather.gov/gridpoints/SLC/58,163/forecast')
     .then((response)=>{
+      console.log('nwsfcst', response)
       function getMaxWind(string){
         var windArray = string.split(" ")
         var mphLoc = windArray.indexOf("mph")
@@ -356,8 +382,8 @@ export function getNwsForecast(){
         }
       })
       // var payload = 'forecast test'
-      console.log('nwsresp', forecast)
-      console.log('payloadNWS', payload)
+      // console.log('nwsresp', forecast)
+      // console.log('payloadNWS', payload)
       dispatch ({ type: NWS_FCST, payload})
     })
   }

@@ -37,7 +37,7 @@ class Info extends Component {
                    </div>
                    <div className="card-body" style={{backgroundColor: "white"}}>
                      <h5 className="card-title">Fire Danger Level: {propDat[curr]["level"]}</h5>
-                     <p className="card-text">Precautionary Actions: {propDat[curr]["precautions"]}</p>
+                     <p className="card-text">Precautionary Actions: </p><span style={{fontSize: '14px'}}><ul><TextRender data = {propDat[curr]["precautionArray"]} /></ul></span>
                    </div>
                  </div>
                </div>
@@ -58,6 +58,12 @@ class Info extends Component {
     })
     return cardData
   }
-
+function TextRender(data)  {
+  // console.log(data.data)
+  return data.data.map((curr, i) => {
+    return <li key={i}>{curr}</li>
+  })
+  // return 'hi'
+}
 export default Info
 //<div className="card bg-danger text-white" style={{height: '500px'}}>
